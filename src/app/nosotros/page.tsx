@@ -157,12 +157,11 @@ export default function NosotrosPage() {
             <div className="sticky top-28">
               <div className="relative aspect-[4/5] w-full rounded-tr-[100px] rounded-bl-[100px] overflow-hidden bg-[var(--color-ink)] corner-brackets p-2 border border-[var(--color-steel)]/20">
                 <div className="relative w-full h-full rounded-tr-[92px] rounded-bl-[92px] overflow-hidden bg-[var(--color-ink-2)] group flex items-center justify-center">
-                  <div className="absolute inset-0 bg-[var(--color-brass)]/20 mix-blend-overlay z-10 transition-opacity duration-500 group-hover:opacity-0" />
                   <Image
-                    src="/images/team/angelica-guerra.jpg"
-                    alt="Angélica Guerra - Directora General"
+                    src="/images/team/02Angelica.png"
+                    alt="Ing. Angélica Guerra"
                     fill
-                    className="object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
                   />
                   {/* Fallback si no hay imagen */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center -z-10">

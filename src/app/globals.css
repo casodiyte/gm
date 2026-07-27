@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #002855; /* Dark Navy from 'M' */
-  --color-ink-2: #001B3A; 
-  --color-paper: #FFFFFF; /* Pure White background as requested */
-  --color-steel: #6B6B6B; /* Gray from 'Corporativo' */
-  --color-brass: #007BC0; /* Light Blue from 'G' (accent) */
-  --color-rust: #005A8C;
+  --color-ink: #002e5f; /* Azul Marino */
+  --color-ink-2: #002247; 
+  --color-paper: #FFFFFF;
+  --color-steel: #5e6972; /* Gris */
+  --color-brass: #108bcc; /* Azul Cielo */
+  --color-rust: #b65a24; /* Cobre Industrial */
   --color-white: #FFFFFF;
 
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
 
-  --font-display: var(--font-big-shoulders);
-  --font-heading: var(--font-space-grotesk);
+  --font-display: var(--font-barlow-condensed);
+  --font-heading: var(--font-barlow-condensed);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
 }
