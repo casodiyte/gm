@@ -53,8 +53,8 @@ export default function Home() {
             animate="visible"
             className="max-w-2xl lg:-mt-16"
           >
-            <motion.p variants={fadeInUp} className="font-mono text-sm tracking-widest text-[var(--color-brass)] mb-2 uppercase">
-              GM Corporativo Industrial / Est. 1987
+            <motion.p variants={fadeInUp} className="font-mono text-base md:text-lg font-semibold tracking-widest text-[var(--color-brass)] mb-3 uppercase">
+              GM Corporativo Industrial / Est. 2005
             </motion.p>
             <motion.p variants={fadeInUp} className="font-sans text-[11px] tracking-[0.3em] text-[var(--color-steel)] mb-6 uppercase font-medium">
               Excellence Through Experience in Optimum Technology
@@ -63,7 +63,7 @@ export default function Home() {
               Ingeniería de bombeo que no falla cuando la planta no puede parar.
             </motion.h1>
             <motion.p variants={fadeInUp} className="font-sans text-lg sm:text-xl text-[var(--color-ink)]/80 max-w-xl mb-8 text-balance leading-relaxed">
-              Más de 38 años diseñando, fabricando y rehabilitando sistemas de bombeo, control y flujo de fluidos para la industria mexicana.
+              Más de 20 años diseñando, fabricando y rehabilitando sistemas de bombeo, control y flujo de fluidos para la industria mexicana.
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" asChild>
@@ -82,7 +82,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="bg-[var(--color-ink)]/85 backdrop-blur-md border border-white/10 p-8 shadow-2xl grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 corner-brackets">
             {[
-              { value: 38, suffix: "+", label: "Años de ingeniería aplicada" },
+              { value: 20, suffix: "+", label: "Años de ingeniería aplicada" },
               { value: 12, suffix: "", label: "Líneas de solución" },
               { value: 13, suffix: "", label: "Equipos en catálogo" },
               { value: 11, suffix: "+", label: "Marcas representadas" }
