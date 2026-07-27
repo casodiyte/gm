@@ -17,7 +17,7 @@ export function Footer() {
                 src="/images/logo.png" 
                 alt="GM Corporativo Industrial" 
                 fill 
-                className="object-contain object-left group-hover:opacity-90 transition-opacity"
+                className="object-contain object-left group-hover:opacity-90 transition-opacity brightness-0 invert"
               />
             </Link>
             <p className="text-[var(--color-paper)]/70 font-sans text-sm mb-6 max-w-xs text-balance">

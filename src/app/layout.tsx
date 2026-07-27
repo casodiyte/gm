@@ -48,14 +48,6 @@ export const metadata: Metadata = {
     description: "Soluciones integrales en sistemas de bombeo, fabricación, diseño y mantenimiento. Más de 45 años de excelencia.",
     url: "https://gmcorporativo.com.mx",
     siteName: "Grupo Industrial GM",
-    images: [
-      {
-        url: "/images/sectores/aguas.jpg", 
-        width: 1200,
-        height: 630,
-        alt: "Instalaciones y Equipos de Bombeo Industrial - GM",
-      },
-    ],
     locale: "es_MX",
     type: "website",
   },
@@ -63,7 +55,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Grupo Industrial GM | Bombeo Industrial",
     description: "Ingeniería de procesos de bombeo, fabricación y laboratorio acreditado EMA.",
-    images: ["/images/sectores/aguas.jpg"],
   },
   robots: {
     index: true,

@@ -40,9 +40,9 @@ export function Navbar() {
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo */}
-            <Link href="/" className="flex flex-shrink-0 relative w-40 h-16 group">
+            <Link href="/" className="flex flex-shrink-0 relative w-48 h-16 lg:w-64 lg:h-20 group">
               <Image 
                 src="/images/logo.png" 
                 alt="GM Corporativo Industrial" 
