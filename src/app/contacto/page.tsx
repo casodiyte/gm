@@ -274,19 +274,38 @@ export default function ContactoPage() {
           {/* Derecha: Información y Mapa (45%) */}
           <div className="lg:w-[45%] flex flex-col gap-8 pt-2">
             
-            <motion.div variants={fadeInUp} className="group bg-white p-8 md:p-10 border border-[var(--color-steel)]/10 shadow-xl hover:shadow-2xl hover:border-[var(--color-brass)]/40 transition-all duration-500 hover:-translate-y-1 rounded-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
-                <MapPin className="w-24 h-24" />
+            {/* Centro de Operaciones & Mapa Fusionado */}
+            <motion.div variants={fadeInUp} className="group bg-white border border-[var(--color-steel)]/10 shadow-xl hover:shadow-2xl hover:border-[var(--color-brass)]/40 transition-all duration-500 hover:-translate-y-1 rounded-sm relative overflow-hidden flex flex-col">
+              <div className="p-8 md:p-10 relative z-10">
+                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                  <MapPin className="w-24 h-24" />
+                </div>
+                <h3 className="font-mono text-[11px] tracking-[0.2em] text-[var(--color-brass)] uppercase mb-6 flex items-center gap-3">
+                  <MapPin className="w-4 h-4" /> Centro de Operaciones
+                </h3>
+                <p className="font-sans text-xl text-[var(--color-ink)] leading-relaxed font-medium relative z-10">
+                  Lago de Guadalupe s/n<br />
+                  San Mateo Tecoloapan<br />
+                  Atizapán de Zaragoza<br />
+                  <span className="text-[var(--color-steel)] text-lg">Edomex, CP 52920</span>
+                </p>
               </div>
-              <h3 className="font-mono text-[11px] tracking-[0.2em] text-[var(--color-brass)] uppercase mb-6 flex items-center gap-3">
-                <MapPin className="w-4 h-4" /> Centro de Operaciones
-              </h3>
-              <p className="font-sans text-xl text-[var(--color-ink)] leading-relaxed font-medium relative z-10">
-                Lago de Guadalupe s/n<br />
-                San Mateo Tecoloapan<br />
-                Atizapán de Zaragoza<br />
-                <span className="text-[var(--color-steel)] text-lg">Edomex, CP 52920</span>
-              </p>
+              
+              {/* Mapa Interactivo */}
+              <div className="w-full h-64 sm:h-80 bg-[var(--color-ink)] relative mt-auto border-t border-[var(--color-steel)]/10 overflow-hidden">
+                <div className="absolute inset-0 border-[3px] border-transparent group-hover:border-[var(--color-brass)]/50 transition-colors duration-500 z-10 pointer-events-none" />
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3759.058324654199!2d-99.22971732418507!3d19.582001785891464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d21dafc6eb1d53%3A0xee48b74d1a3ecc2b!2sGM%20Corporativo%20Industrial!5e0!3m2!1sen!2smx!4v1785184461939!5m2!1sen!2smx" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen={false} 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                  title="Mapa de ubicación GM Corporativo Industrial"
+                ></iframe>
+              </div>
             </motion.div>
 
             <motion.div variants={fadeInUp} className="group bg-white p-8 md:p-10 border border-[var(--color-steel)]/10 shadow-xl hover:shadow-2xl hover:border-[var(--color-brass)]/40 transition-all duration-500 hover:-translate-y-1 rounded-sm">
@@ -300,7 +319,7 @@ export default function ContactoPage() {
                   <a href="tel:5553052003" className="text-[var(--color-ink)] hover:text-[var(--color-brass)] transition-colors py-1">55-5305-2003</a>
                 </div>
                 <div className="pt-6 border-t border-[var(--color-steel)]/10">
-                  <a href="mailto:contacto@gmcorporativoindustrial.com" className="inline-flex items-center gap-3 font-sans text-[15px] text-[var(--color-steel)] hover:text-[var(--color-brass)] transition-colors group/mail">
+                  <a href="mailto:contacto@gmcorporativo.com" className="inline-flex items-center gap-3 font-sans text-[15px] text-[var(--color-steel)] hover:text-[var(--color-brass)] transition-colors group/mail">
                     <Mail className="w-4 h-4 group-hover/mail:-translate-y-0.5 transition-transform" />
                     {process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contacto@gmcorporativo.com'}
                   </a>
@@ -322,22 +341,6 @@ export default function ContactoPage() {
                   <span className="font-mono text-[var(--color-brass)] font-semibold">Guardia técnica</span>
                 </div>
               </div>
-            </motion.div>
-
-            {/* Mapa Interactivo */}
-            <motion.div variants={fadeInUp} className="w-full h-80 bg-[var(--color-ink)] relative mt-2 rounded-sm shadow-2xl overflow-hidden group">
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-[var(--color-brass)]/50 transition-colors duration-500 z-10 pointer-events-none rounded-sm" />
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3759.7188737385966!2d-99.22950092398555!3d19.58189703666035!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d21c37b120286b%3A0xf6956dc8a927c344!2sLago%20de%20Guadalupe%2C%20San%20Mateo%20Tecoloapan%2C%20C.P.%2052920%20Cd%20L%C3%B3pez%20Mateos%2C%20M%C3%A9x.!5e0!3m2!1ses-419!2smx!4v1715012345678!5m2!1ses-419!2smx" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={false} 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                title="Mapa de ubicación GM Corporativo Industrial"
-              ></iframe>
             </motion.div>
 
           </div>

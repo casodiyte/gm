@@ -32,10 +32,11 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[600px] flex items-center justify-center pt-20 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-ink)]/85 to-[var(--color-ink)]/65 z-10" />
+      <section className="relative h-screen min-h-[600px] flex items-center pt-20 overflow-hidden bg-[var(--color-paper)]">
+        {/* Right side Image (Desktop) / Background Image (Mobile) */}
+        <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full z-0 opacity-20 lg:opacity-100">
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-paper)] via-transparent to-transparent z-10 hidden lg:block" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-paper)] via-[var(--color-paper)]/80 to-transparent z-10 block lg:hidden" />
           <Image
             src="https://lirp.cdn-website.com/701a9e2d/dms3rep/multi/opt/bg_412880776_01-1920w.jpg"
             alt="Fondo Hero Industrial"
@@ -50,25 +51,25 @@ export default function Home() {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="max-w-4xl -mt-16 sm:-mt-24"
+            className="max-w-2xl lg:-mt-16"
           >
             <motion.p variants={fadeInUp} className="font-mono text-sm tracking-widest text-[var(--color-brass)] mb-2 uppercase">
               GM Corporativo Industrial / Est. 1987
             </motion.p>
-            <motion.p variants={fadeInUp} className="font-sans text-[11px] tracking-[0.3em] text-white/60 mb-6 uppercase">
+            <motion.p variants={fadeInUp} className="font-sans text-[11px] tracking-[0.3em] text-[var(--color-steel)] mb-6 uppercase font-medium">
               Excellence Through Experience in Optimum Technology
             </motion.p>
-            <motion.h1 variants={fadeInUp} className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl leading-[1.15] text-white mb-6 uppercase text-balance">
+            <motion.h1 variants={fadeInUp} className="font-display font-bold text-4xl sm:text-5xl md:text-5xl lg:text-6xl leading-[1.15] text-[var(--color-ink)] mb-6 uppercase text-balance pr-4">
               Ingeniería de bombeo que no falla cuando la planta no puede parar.
             </motion.h1>
-            <motion.p variants={fadeInUp} className="font-sans text-lg sm:text-xl text-white/80 max-w-2xl mb-6 text-balance leading-relaxed">
-              Más de 38 años diseñando, fabricando y rehabilitando sistemas de bombeo, control y flujo de fluidos para la industria mexicana. Del ingenio azucarero a la minería, del papelero al tratamiento de aguas.
+            <motion.p variants={fadeInUp} className="font-sans text-lg sm:text-xl text-[var(--color-ink)]/80 max-w-xl mb-8 text-balance leading-relaxed">
+              Más de 38 años diseñando, fabricando y rehabilitando sistemas de bombeo, control y flujo de fluidos para la industria mexicana.
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" asChild>
                 <Link href="/contacto">Solicitar cotización <ArrowRight className="ml-2 w-4 h-4" /></Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="border-white text-white hover:bg-white hover:text-[var(--color-ink)]">
+              <Button size="lg" variant="outline" className="text-[var(--color-ink)] border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white" asChild>
                 <Link href="/catalogo">Ver catálogo</Link>
               </Button>
             </motion.div>
@@ -76,10 +77,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust Bar (Glassmorphism) */}
-      <section className="relative z-30 -mt-20 mx-4 sm:mx-8 lg:mx-auto max-w-7xl lg:-mt-28">
+      {/* Trust Bar (Dark Glassmorphism) */}
+      <section className="relative z-30 -mt-16 lg:-mt-24 mx-4 sm:mx-8 lg:mx-auto max-w-7xl">
         <div className="container mx-auto px-4">
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 shadow-2xl grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 corner-brackets">
+          <div className="bg-[var(--color-ink)]/85 backdrop-blur-md border border-white/10 p-8 shadow-2xl grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 corner-brackets">
             {[
               { value: 38, suffix: "+", label: "Años de ingeniería aplicada" },
               { value: 12, suffix: "", label: "Líneas de solución" },
@@ -97,7 +98,7 @@ export default function Home() {
                 <span className="font-display font-bold text-4xl lg:text-5xl text-[var(--color-brass)] mb-1.5 drop-shadow-md">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </span>
-                <span className="font-mono text-[10px] sm:text-xs text-white/80 uppercase tracking-widest">{stat.label}</span>
+                <span className="font-mono text-[10px] sm:text-xs text-[var(--color-paper)]/80 uppercase tracking-widest">{stat.label}</span>
               </motion.div>
             ))}
           </div>

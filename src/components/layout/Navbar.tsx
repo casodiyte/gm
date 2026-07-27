@@ -34,11 +34,7 @@ export function Navbar() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-          isScrolled || !isHomePage ? "bg-white/95 backdrop-blur-md border-b border-[var(--color-steel)]/20 shadow-sm" : "bg-transparent"
-        }`}
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[var(--color-steel)]/20 shadow-sm transition-colors duration-300">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo */}
@@ -58,11 +54,7 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`font-sans text-sm font-medium px-3 py-2 transition-colors ${
-                    isScrolled || !isHomePage 
-                      ? "text-[var(--color-ink)] hover:text-[var(--color-brass)]" 
-                      : "text-[var(--color-paper)] hover:text-[var(--color-brass)]"
-                  }`}
+                  className="font-sans text-sm font-medium px-3 py-2 transition-colors text-[var(--color-ink)] hover:text-[var(--color-brass)]"
                 >
                   {link.name}
                 </Link>
@@ -71,9 +63,7 @@ export function Navbar() {
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center space-x-6">
-              <a href="tel:5546020434" className={`flex items-center text-sm font-mono transition-colors ${
-                isScrolled || !isHomePage ? "text-[var(--color-ink)] hover:text-[var(--color-brass)]" : "text-[var(--color-paper)] hover:text-[var(--color-brass)]"
-              }`}>
+              <a href="tel:5546020434" className="flex items-center text-sm font-mono transition-colors text-[var(--color-ink)] hover:text-[var(--color-brass)]">
                 <Phone className="w-4 h-4 mr-2" />
                 55-4602-0434
               </a>
@@ -86,9 +76,7 @@ export function Navbar() {
             <div className="lg:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className={`p-2 transition-colors ${
-                  isScrolled || !isHomePage ? "text-[var(--color-ink)] hover:text-[var(--color-brass)]" : "text-[var(--color-paper)] hover:text-[var(--color-brass)]"
-                }`}
+                className="p-2 transition-colors text-[var(--color-ink)] hover:text-[var(--color-brass)]"
                 aria-label="Abrir menú"
               >
                 <Menu className="w-6 h-6" />
