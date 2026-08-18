@@ -3,89 +3,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, Variants } from "framer-motion";
-import { Factory, Mountain, FileStack, Droplets, UtensilsCrossed, Cog, ArrowRight, Zap, Wrench, ShieldCheck, Fan, Gauge } from "lucide-react";
+import { motion } from "framer-motion";
+import { Droplets, ArrowRight, Zap, Wrench, ShieldCheck, Fan, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ServiceCard } from "@/components/ui/ServiceCard";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-
-const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const staggerContainer: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
+import { Hero } from "@/components/home/Hero";
 
 export default function Home() {
   const router = useRouter();
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative h-screen min-h-[600px] flex items-center pt-20 overflow-hidden bg-[var(--color-paper)]">
-        {/* Right side Image (Desktop) / Background Image (Mobile) */}
-        <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full z-0 opacity-20 lg:opacity-100">
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-paper)] via-transparent to-transparent z-10 hidden lg:block" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-paper)] via-[var(--color-paper)]/80 to-transparent z-10 block lg:hidden" />
-          <Image
-            src="https://lirp.cdn-website.com/701a9e2d/dms3rep/multi/opt/bg_412880776_01-1920w.jpg"
-            alt="Fondo Hero Industrial"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="max-w-2xl lg:-mt-16"
-          >
-            <motion.p variants={fadeInUp} className="font-mono text-base md:text-lg font-semibold tracking-widest text-[var(--color-brass)] mb-3 uppercase">
-              GM Corporativo Industrial / Est. 2005
-            </motion.p>
-            <motion.p variants={fadeInUp} className="font-sans text-[11px] tracking-[0.3em] text-[var(--color-steel)] mb-6 uppercase font-medium">
-              Excellence Through Experience in Optimum Technology
-            </motion.p>
-            <motion.h1 variants={fadeInUp} className="font-display font-bold text-4xl sm:text-5xl md:text-5xl lg:text-6xl leading-[1.15] text-[var(--color-ink)] mb-6 uppercase text-balance pr-4">
-              Ingeniería de bombeo que no falla cuando la planta no puede parar.
-            </motion.h1>
-            <motion.p variants={fadeInUp} className="font-sans text-lg sm:text-xl text-[var(--color-ink)]/80 max-w-xl mb-8 text-balance leading-relaxed">
-              Más de 20 años diseñando, fabricando y rehabilitando sistemas de bombeo, control y flujo de fluidos para la industria mexicana.
-            </motion.p>
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" asChild>
-                <Link href="/contacto">Solicitar cotización <ArrowRight className="ml-2 w-4 h-4" /></Link>
-              </Button>
-              <Button size="lg" variant="outline" className="text-[var(--color-ink)] border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white" asChild>
-                <Link href="/catalogo">Ver catálogo</Link>
-              </Button>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <Hero />
 
       {/* Trust Bar (Dark Glassmorphism) */}
-      <section className="relative z-30 -mt-16 lg:-mt-24 mx-4 sm:mx-8 lg:mx-auto max-w-7xl">
+      <section className="relative z-30 -mt-8 mx-4 max-w-7xl sm:mx-8 lg:mx-auto lg:-mt-12">
         <div className="container mx-auto px-4">
           <div className="bg-[var(--color-ink)]/85 backdrop-blur-md border border-white/10 p-8 shadow-2xl grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 corner-brackets">
             {[
               { value: 20, suffix: "+", label: "Años de ingeniería aplicada" },
               { value: 12, suffix: "", label: "Líneas de solución" },
-              { value: 13, suffix: "", label: "Equipos en catálogo" },
-              { value: 11, suffix: "+", label: "Marcas representadas" }
+              { value: 16, suffix: "", label: "Equipos en catálogo" },
+              { value: 10, suffix: "+", label: "Marcas representadas" }
             ].map((stat, index) => (
               <motion.div 
                 key={index}
@@ -142,6 +84,7 @@ export default function Home() {
                     src="/images/sectores/service_electromec_1784677840904.jpg" 
                     alt="Laboratorio de Pruebas GM"
                     fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
                     className="object-cover opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity duration-500"
                   />
                </div>
@@ -279,7 +222,7 @@ export default function Home() {
         
         {/* Giant Quote Background */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20rem] lg:text-[40rem] font-display font-bold text-[var(--color-steel)]/5 select-none pointer-events-none z-0 leading-none mt-10">
-          "
+          &ldquo;
         </div>
 
         <div className="container mx-auto px-4 text-center relative z-10">
@@ -305,7 +248,7 @@ export default function Home() {
               viewport={{ once: true, margin: "-100px" }}
               className="font-display font-medium text-3xl md:text-5xl text-[var(--color-ink)] leading-[1.2] mb-12 relative"
             >
-              <span className="text-[var(--color-brass)] mr-2">"</span>
+              <span className="text-[var(--color-brass)] mr-2">&ldquo;</span>
               {"La innovación tecnológica y la eficiencia energética son los pilares indispensables para construir una industria más competitiva, fuerte y sustentable.".split(" ").map((word, index) => (
                 <span key={index} className="inline-block mr-[0.25em] overflow-hidden pb-1">
                   <motion.span
@@ -319,7 +262,7 @@ export default function Home() {
                   </motion.span>
                 </span>
               ))}
-              <span className="text-[var(--color-brass)] ml-1">"</span>
+              <span className="text-[var(--color-brass)] ml-1">&rdquo;</span>
             </motion.blockquote>
             
             <motion.cite 
@@ -344,7 +287,8 @@ export default function Home() {
           <Image 
             src="/images/sectores/manufactura.jpg" 
             alt="Ingeniería Industrial" 
-            fill 
+            fill
+            sizes="100vw"
             className="object-cover opacity-20 mix-blend-luminosity scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)] via-[var(--color-ink)]/90 to-[var(--color-ink)]/60" />

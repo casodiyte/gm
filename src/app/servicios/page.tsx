@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Cog, Zap, ShieldCheck, Wrench, Droplets, Wind, Fan, Gauge, Replace, Activity, Settings2, Hammer } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -72,10 +73,12 @@ export default function ServiciosPage() {
         {/* Por qué GM */}
         <div className="relative rounded-sm overflow-hidden corner-brackets border border-[var(--color-steel)]/20 shadow-2xl">
           <div className="absolute inset-0 z-0">
-            <img 
+            <Image
               src="/images/sectores/aguas.jpg" 
               alt="Planta de Tratamiento" 
-              className="object-cover w-full h-full scale-105"
+              fill
+              sizes="100vw"
+              className="object-cover scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-ink)] via-[var(--color-ink)]/95 to-[var(--color-ink)]/70" />
             <div className="absolute inset-0 bg-[var(--color-ink)]/40 mix-blend-multiply" />

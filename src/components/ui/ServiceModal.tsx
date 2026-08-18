@@ -65,6 +65,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
                   src={service.imageSrc}
                   alt={service.title}
                   fill
+                  sizes="(min-width: 768px) 40vw, 100vw"
                   className="object-cover"
                 />
               </div>

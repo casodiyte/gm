@@ -43,8 +43,8 @@ export default async function Image() {
         />
         
         {/* The GM Logo, made much larger */}
-        {/* @ts-ignore */}
-        <img src={logoBase64} style={{ width: 800, objectFit: "contain" }} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoBase64} alt="" style={{ width: 800, objectFit: "contain" }} />
       </div>
     ),
     {

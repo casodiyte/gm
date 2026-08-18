@@ -7,6 +7,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { name: "Inicio", href: "/" },
@@ -23,38 +24,74 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+  const isFloating = isHomePage && !isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[var(--color-steel)]/20 shadow-sm transition-colors duration-300">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
+      <header
+        className={cn(
+          "fixed z-50 border transition-all duration-300",
+          isFloating
+            ? "left-3 right-3 top-3 rounded-2xl border-white/15 bg-[#03172c]/78 shadow-[0_18px_60px_rgba(0,8,20,.28)] backdrop-blur-xl lg:left-6 lg:right-6 lg:top-5"
+            : "left-0 right-0 top-0 rounded-none border-x-0 border-t-0 border-[var(--color-steel)]/20 bg-white/95 shadow-sm backdrop-blur-md",
+        )}
+      >
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
+          <div className={cn("flex items-center justify-between transition-[height] duration-300", isFloating ? "h-16 lg:h-20" : "h-20 lg:h-24")}>
             {/* Logo */}
-            <Link href="/" className="flex flex-shrink-0 relative w-48 h-16 lg:w-64 lg:h-20 group">
+            <Link href="/" className="group relative flex h-14 w-40 flex-shrink-0 lg:h-16 lg:w-52" aria-label="Ir al inicio">
               <Image 
                 src="/images/logo.png" 
                 alt="GM Corporativo Industrial" 
                 fill 
-                className="object-contain group-hover:opacity-90 transition-opacity"
-                priority 
+                sizes="(min-width: 1024px) 208px, 160px"
+                className={cn(
+                  "object-contain transition-all duration-300 group-hover:opacity-90",
+                  isFloating && "brightness-0 invert",
+                )}
+                loading="eager"
               />
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex space-x-1 lg:space-x-4">
+            <nav className="hidden items-center lg:flex" aria-label="Navegación principal">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="font-sans text-sm font-medium px-3 py-2 transition-colors text-[var(--color-ink)] hover:text-[var(--color-brass)]"
+                  aria-current={pathname === link.href ? "page" : undefined}
+                  className={cn(
+                    "relative px-2.5 py-3 font-sans text-[13px] font-semibold transition-colors xl:px-3",
+                    isFloating ? "text-white/78 hover:text-white" : "text-[var(--color-ink)] hover:text-[var(--color-brass)]",
+                    pathname === link.href && (isFloating ? "text-white" : "text-[var(--color-brass)]"),
+                    "after:absolute after:bottom-1.5 after:left-2.5 after:right-2.5 after:h-px after:origin-left after:scale-x-0 after:bg-[var(--color-brass)] after:transition-transform aria-[current=page]:after:scale-x-100",
+                  )}
                 >
                   {link.name}
                 </Link>
@@ -62,12 +99,12 @@ export function Navbar() {
             </nav>
 
             {/* Desktop Actions */}
-            <div className="hidden lg:flex items-center space-x-6">
-              <a href="tel:5546020434" className="flex items-center text-sm font-mono transition-colors text-[var(--color-ink)] hover:text-[var(--color-brass)]">
+            <div className="hidden items-center space-x-5 xl:flex">
+              <a href="tel:5546020434" className={cn("flex items-center font-mono text-xs transition-colors hover:text-[var(--color-brass)]", isFloating ? "text-white/75" : "text-[var(--color-ink)]")}>
                 <Phone className="w-4 h-4 mr-2" />
                 55-4602-0434
               </a>
-              <Button asChild>
+              <Button asChild className={cn("rounded-full px-6", isFloating && "text-white")}>
                 <Link href="/contacto">Cotizar</Link>
               </Button>
             </div>
@@ -76,8 +113,12 @@ export function Navbar() {
             <div className="lg:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 transition-colors text-[var(--color-ink)] hover:text-[var(--color-brass)]"
+                className={cn(
+                  "grid h-11 w-11 place-items-center rounded-full transition-colors hover:text-[var(--color-brass)]",
+                  isFloating ? "bg-white/10 text-white" : "text-[var(--color-ink)]",
+                )}
                 aria-label="Abrir menú"
+                aria-expanded={isMobileMenuOpen}
               >
                 <Menu className="w-6 h-6" />
               </button>
@@ -103,15 +144,19 @@ export function Navbar() {
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-[var(--color-ink)] z-50 border-l border-[var(--color-ink-2)] lg:hidden flex flex-col shadow-2xl"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menú de navegación"
             >
               <div className="flex items-center justify-between p-6 border-b border-[var(--color-ink-2)]">
                 <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="relative w-32 h-12">
-                  <Image src="/images/logo.png" alt="GM Corporativo Industrial" fill className="object-contain" />
+                  <Image src="/images/logo.png" alt="GM Corporativo Industrial" fill sizes="128px" className="object-contain" />
                 </Link>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 text-[var(--color-paper)] hover:text-[var(--color-brass)] transition-colors"
+                  className="grid h-11 w-11 place-items-center text-[var(--color-paper)] transition-colors hover:text-[var(--color-brass)]"
                   aria-label="Cerrar menú"
+                  autoFocus
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -122,7 +167,8 @@ export function Navbar() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-sans text-lg font-medium text-[var(--color-paper)] hover:text-[var(--color-brass)] py-4 border-b border-[var(--color-ink-2)] transition-colors"
+                    aria-current={pathname === link.href ? "page" : undefined}
+                    className="border-b border-[var(--color-ink-2)] py-4 font-sans text-lg font-medium text-[var(--color-paper)] transition-colors hover:text-[var(--color-brass)] aria-[current=page]:text-[var(--color-brass)]"
                   >
                     {link.name}
                   </Link>

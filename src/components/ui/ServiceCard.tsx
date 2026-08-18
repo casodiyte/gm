@@ -38,6 +38,7 @@ export function ServiceCard({ number, title, description, Icon, imageSrc, onClic
               src={imageSrc}
               alt={title}
               fill
+              sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
               className="object-cover scale-100 opacity-0 group-hover:scale-110 group-hover:opacity-40 transition-all duration-700 ease-out mix-blend-luminosity"
             />
           </div>

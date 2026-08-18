@@ -100,7 +100,7 @@ export default function NosotrosPage() {
             >
                {/* background image */}
                <div className="absolute inset-0 z-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500 mix-blend-luminosity">
-                  <Image src={item.img} alt={item.title} fill className="object-cover" />
+                  <Image src={item.img} alt={item.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
                </div>
                <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#151a24] via-[#151a24]/90 to-transparent" />
                
@@ -127,7 +127,7 @@ export default function NosotrosPage() {
           >
             {/* background image */}
             <div className="absolute inset-0 z-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500 mix-blend-luminosity">
-              <Image src="/images/sectores/service_motores_1784677831770.jpg" alt="Valores" fill className="object-cover" />
+              <Image src="/images/sectores/service_motores_1784677831770.jpg" alt="Valores" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
             </div>
             <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#151a24] via-[#151a24]/90 to-transparent" />
             
@@ -161,6 +161,7 @@ export default function NosotrosPage() {
                     src="/images/team/02Angelica.png"
                     alt="Ing. Angélica Guerra"
                     fill
+                    sizes="(min-width: 1024px) 40vw, 90vw"
                     className="object-cover transition-all duration-700 group-hover:scale-105"
                   />
                   {/* Fallback si no hay imagen */}
@@ -254,7 +255,7 @@ export default function NosotrosPage() {
 
             {/* Cita Destacada Final */}
             <div className="mt-20 max-w-4xl mx-auto text-center relative py-6">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[8rem] text-[var(--color-brass)]/10 font-serif leading-none -mt-10 select-none z-0">"</div>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[8rem] text-[var(--color-brass)]/10 font-serif leading-none -mt-10 select-none z-0">&ldquo;</div>
               <motion.div 
                 variants={{
                   hidden: { opacity: 0 },

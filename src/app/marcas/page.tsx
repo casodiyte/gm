@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
@@ -52,10 +53,13 @@ export default function MarcasPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-brass)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="relative w-full h-20 mb-4 flex items-center justify-center z-10">
-                <img
+                <Image
                   src={`https://logo.clearbit.com/${brand.domain}`}
                   alt={`Logo de ${brand.name}`}
-                  className="object-contain w-full h-full filter grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100 transition-all duration-500"
+                  fill
+                  unoptimized
+                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 90vw"
+                  className="object-contain p-1 opacity-60 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
                   onError={(e) => {
                     // Fallback to text if logo fails to load
                     e.currentTarget.style.display = 'none';

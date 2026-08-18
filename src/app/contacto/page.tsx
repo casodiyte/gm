@@ -59,7 +59,7 @@ export default function ContactoPage() {
       console.log(data);
       setSubmitStatus("success");
       reset();
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

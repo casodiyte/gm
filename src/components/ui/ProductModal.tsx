@@ -81,6 +81,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                   src={product.img}
                   alt={product.name}
                   fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-contain p-8 mix-blend-multiply"
                 />
               </div>
