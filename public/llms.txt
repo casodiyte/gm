@@ -1,46 +1,37 @@
 # GM Corporativo Industrial
 
-GM Corporativo Industrial es una empresa mexicana con más de 45 años de experiencia en ingeniería de procesos de bombeo industrial, ubicada en Atizapán de Zaragoza, Estado de México. 
-Liderada por la Directora General Angélica Guerra, GM es un proveedor B2B de equipos de bombeo a nivel mundial (comparable a marcas como Siemens Energy, Grundfos, Xylem, KSB) enfocado en el mercado industrial mexicano.
+GM Corporativo Industrial es una empresa mexicana especialista en soluciones para sistemas de bombeo, con más de 45 años de experiencia. Diseña, fabrica, rehabilita y prueba equipos de bombeo e integra tecnologías de aliados estratégicos para procesos industriales.
 
-## Información de Contacto
-- **Dirección:** Lago de Guadalupe s/n, San Mateo Tecoloapan, Atizapán de Zaragoza, Edomex, CP 52920
-- **Teléfonos:** 55-4602-0434 / 55-5305-1026
-- **Email:** contacto@gmcorporativoindustrial.com
-- **WhatsApp:** +52 55 4602 0434
+## Contacto confirmado
+- WhatsApp: +52 55 4602 0434
+- Teléfono: +52 55 5305 1026
+- Correo: info@gmcorporativo.mx
+- Ubicación: Carretera Lago de Guadalupe, San Mateo Tecoloapan, Atizapán de Zaragoza, Estado de México, C.P. 52920
 
-## Nuestros Sectores
-Brindamos soluciones integrales a industrias clave como:
-- Azucarero
-- Minero
-- Papelero
-- Tratamiento de aguas
-- Alimentos y bebidas
-- Manufactura general
+## Servicios
+- Equipos de bombeo
+- Motores eléctricos
+- Soluciones electromecánicas
+- Sellos mecánicos
+- Turbinas de vapor
+- Equipos agroindustriales
+- Tratamiento de agua
+- Rehabilitación de equipos
+- Accesorios y servicio técnico
+- Ventilación industrial
+- Extracción e inyección
 
-## Catálogo de Productos
-- **Centrífugas:** Estándar (GM-CENT-001), ANSI (GM-CENT-ANSI), Horizontal Acoplamiento Directo (GM-CENT-HAD), Horizontal Manejo de Papel (GM-CENT-MP), Horizontal Sellado Hidráulico (GM-CENT-SH), Centrífuga Caja Axial (GM-CENT-CAX), Horizontal Vórtex (GM-CENT-VTX), Centrífuga Inatascable (GM-CENT-INA).
-- **Flujo Axial / Turbinas:** Bomba de Flujo Axial (GM-AXI-001), Bomba de Flujo Mixto (GM-MIX-001), Turbina Vertical (GM-TVERT-001).
-- **Desplazamiento Positivo:** Aspas Deslizantes (GM-DP-ASP), Chapaleta (GM-DP-CHA).
-- **Especiales:** Bomba Heavy Flow / Alto Caudal (GM-ESP-HF), Bomba de Vacío (GM-ESP-VAC).
-- **Laboratorio de Pruebas:** Laboratorio de Pruebas (GM-LAB-001).
+## Marcas representadas
+NOV (MONO, Moyno, Chemineer), Vogelsang, Forbes Marshall, SJE Rhombus, Eletrosert, TEMISA, Tsurumi Pump, Fertron, Bio Condensados, Exatta, Latty, Refrastrabe, Sertmax y Metalplast.
 
-## Nuestras 12 Líneas de Servicio
-1. Equipos de bombeo
-2. Motores eléctricos
-3. Soluciones electromecánicas
-4. Sellos mecánicos
-5. Turbinas de vapor
-6. Válvulas de control
-7. Equipos agroindustriales
-8. Tratamiento de agua
-9. Rehabilitación de equipos de bombeo
-10. Accesorios y servicio técnico
-11. Ventilación industrial
-12. Extracción e inyección
+## Industrias
+Agua, azúcar, minería, papel, alimentos y bebidas, aceites, química y manufactura.
 
-## Marcas Representadas
-Vogelsang, Forbes Marshall, Biocondensados, SJE, Eletrosert, B&W, S&P, Temisa, Tsurumi, Fertron.
-
-## Filosofía
-La innovación tecnológica y la eficiencia energética son los pilares indispensables para construir una industria más competitiva, fuerte y sustentable. Nuestro modelo de negocio se basa en la optimización de procesos, el incremento en la confiabilidad y la reducción del consumo energético.
+## Recursos del sitio
+- /catalogo: bombas GM, líneas NOV Mono y Moyno, y biblioteca técnica
+- /servicios: líneas de servicio
+- /marcas: marcas representadas
+- /nosotros: historia, misión, visión y valores
+- /contacto: solicitud técnica preparada para WhatsApp
+- /privacidad: aviso de privacidad
+- /terminos: términos de uso

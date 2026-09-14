@@ -1,8 +1,30 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowLeft } from "lucide-react";
 import { BLOG_POSTS, getPostBySlug } from "@/lib/blog-data";
+import { SITE } from "@/lib/site-data";
+
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await props.params;
+  const post = getPostBySlug(slug);
+  if (!post) return {};
+
+  const description = post.content[0].replace(/\*\*/g, "").slice(0, 155);
+  return {
+    title: post.title,
+    description,
+    alternates: { canonical: `${SITE.url}/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description,
+      type: "article",
+      url: `${SITE.url}/blog/${post.slug}`,
+      images: [{ url: post.fallbackImage, alt: post.title }],
+    },
+  };
+}
 
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({
@@ -35,7 +57,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             <div className="flex items-center text-[var(--color-steel)] font-mono text-sm mb-6">
               <Calendar className="w-4 h-4 mr-2" />
               <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date(post.date).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
               </time>
             </div>
             
@@ -51,7 +73,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
               fill
               sizes="(min-width: 768px) 768px, 100vw"
               className="object-cover"
-              loading="eager"
+              priority
             />
           </div>
 

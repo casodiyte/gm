@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
+import { SITE } from "@/lib/site-data";
+
+const canonical = `${SITE.url}/nosotros`;
+const description = `Conoce la historia, misión, visión y valores de GM Corporativo Industrial: más de ${SITE.yearsOfExperience} años de experiencia en soluciones para sistemas de bombeo.`;
 
 export const metadata: Metadata = {
-  title: "Nosotros | Historia y Experiencia",
-  description: "Conoce a Grupo Industrial GM, líderes con más de 38 años de experiencia en bombeo industrial, ingeniería de procesos y laboratorio acreditado EMA.",
+  title: "Nosotros",
+  description,
+  alternates: {
+    canonical,
+  },
   openGraph: {
-    title: "Nosotros | Grupo Industrial GM",
-    description: "Más de 38 años de experiencia en flujo, presión y confiabilidad. Conoce nuestra historia, misión, valores y el laboratorio de pruebas certificado.",
-    url: "https://gmcorporativo.com.mx/nosotros",
-    images: ["/images/team/angelica-guerra.jpg"],
+    title: `Nosotros | ${SITE.name}`,
+    description,
+    url: canonical,
+    images: ["/opengraph-image"],
   }
 };
 

@@ -1,274 +1,188 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Suspense, useCallback, useState } from "react";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { Download, FileText } from "lucide-react";
 import { ProductCard } from "@/components/ui/ProductCard";
-import { ProductModal, ProductDetails } from "@/components/ui/ProductModal";
+import { ProductModal } from "@/components/ui/ProductModal";
+import { Isotipo } from "@/components/ui/Isotipo";
+import { TECHNICAL_DOCUMENTS } from "@/lib/site-data";
+import { CATALOG, CATALOG_ITEM_COUNT, findCategory, type ProductDetails } from "@/lib/catalog-data";
+import { cn } from "@/lib/utils";
 
-const CATEGORIES = [
-  "Centrífugas Horizontales",
-  "Verticales · Flujo Axial / Mixto",
-  "Desplazamiento Positivo",
-  "Especiales",
-  "Laboratorio",
-] as const;
-
-type Category = typeof CATEGORIES[number];
-
-const PRODUCTS: Record<Category, ProductDetails[]> = {
-  "Centrífugas Horizontales": [
-    {
-      code: "GM-ANSI-01",
-      name: "Bomba Centrífuga Horizontal de Proceso ANSI",
-      enName: "ANSI horizontal process centrifugal pump",
-      img: "/images/products/BombaCentriANSI.png",
-      norms: "ANSI B73.1 y API 610",
-      sizes: "1½\" a 8\"",
-      capacity: "50 a 4,000 GPM",
-      head: "40 a 300 ft",
-      impeller: "Semi abierto",
-      metallurgy: "Acero inoxidable · CD4MCU al 25% cromo · Hierro al alto níquel · Bronce · Aceros aleados · Hierro gris",
-      applications: "Todo tipo de industrias"
-    },
-    {
-      code: "GM-INAT-01",
-      name: "Bomba Centrífuga Horizontal Inatascable",
-      enName: "Non-clogging horizontal centrifugal pump",
-      img: "/images/products/BombaCentriInatas.png",
-      impeller: "Dos aspas tipo caracol, 100% inatascable",
-      capacity: "10 a 3,000 GPM",
-      head: "25 a 575 ft",
-      metallurgy: "Hierro gris · Aceros aleados · Acero al bajo carbono · Aceros inoxidables"
-    },
-    {
-      code: "GM-VTX-01",
-      name: "Bomba Centrífuga Horizontal Tipo Vortex",
-      enName: "Vortex type horizontal centrifugal pump",
-      img: "/images/products/BombaCentriHoriVortex.png",
-      sizes: "3\", 4\" y 6\" (horizontal y verticalizada)",
-      impeller: "100% inatascable",
-      solids: "3\" a 6\" de diámetro",
-      applications: "Mezclas · Lodos · Fibras · Pulpas",
-      metallurgy: "Aceros aleados de alta dureza · Aceros inoxidables · CD4MCU al 25% cromo"
-    },
-    {
-      code: "GM-CENT-01",
-      name: "Bomba Centrífuga (uso general)",
-      enName: "Centrifugal pump",
-      img: "/images/products/BombaCentri.png",
-      config: "Succión frontal, impulsor semi abierto y cerrado",
-      capacity: "30 a 3,000 GPM",
-      head: "15 a 400 ft",
-      metallurgy: "Hierro gris · Aceros aleados · Acero al bajo carbono · Aceros inoxidables · CD4MCU al 25% cromo"
-    },
-    {
-      code: "GM-SH-01",
-      name: "Bomba Centrífuga Horizontal de Sellado Hidráulico",
-      enName: "Hydraulic sealing horizontal centrifugal pump",
-      img: "/images/products/BombaCentrHorSelladoHidra.png",
-      sizes: "1½\" a 8\"",
-      impeller: "Semi abierto y cerrado",
-      capacity: "100 a 3,000 GPM",
-      head: "30 a 250 ft",
-      temp: "120°C",
-      metallurgy: "Hierro gris · Aceros aleados S400-S300 a 317 · Bronces especiales · CD4MCU al 25% cromo · Ni resist · Aceros aleados"
-    },
-    {
-      code: "GM-MP-01",
-      name: "Bomba Centrífuga Horizontal para Manejo de Papel",
-      enName: "Horizontal centrifugal pump for paper handling",
-      img: "/images/products/BombaCentrHoriManejoPapel.png",
-      discharge: "4\" y 6\"",
-      impeller: "Abierto de 2 y 4 aspas, tipo inatascable",
-      capacity: "500 a 2,500 GPM",
-      head: "50 a 300 ft",
-      metallurgy: "Hierro gris · Bronce · Aceros aleados · Acero inoxidable · CD4MCU al 25% cromo",
-      applications: "Industria papelera"
-    },
-    {
-      code: "GM-AD-01",
-      name: "Bomba Centrífuga Horizontal de Acoplamiento Directo",
-      enName: "Direct coupled horizontal centrifugal pump",
-      img: "/images/products/BombaCentrHoriAcoplDirec.png",
-      config: "Acoplamiento directo a motor",
-      capacity: "Un impulsor: 40 a 900 GPM | Dos impulsores: 60 a 350 GPM",
-      head: "Un impulsor: 20 a 250 ft | Dos impulsores: 250 a 550 ft",
-      metallurgy: "Hierro gris · Aceros aleados · Bronce · Aceros inoxidables"
-    },
-    {
-      code: "GM-CAX-01",
-      name: "Bomba Centrífuga de Caja Partida Axialmente",
-      enName: "Axially split case centrifugal pump",
-      img: "/images/products/BombaCentrifCajaAxial.png",
-      sizes: "2\" a 20\"",
-      impeller: "Succión sencilla y doble succión",
-      capacity: "75 a 18,000 GPM",
-      head: "40 a 1,500 ft",
-      metallurgy: "Hierro gris · Bronce · Aceros aleados · Aceros inoxidables · CD4MCU al 25% cromo"
-    }
-  ],
-  "Verticales · Flujo Axial / Mixto": [
-    {
-      code: "GM-TVERT-01",
-      name: "Bomba Turbina Vertical",
-      enName: "Vertical turbine pump",
-      img: "/images/products/BombaTurbinaVerti.png",
-      sizes: "6\" a 36\"",
-      config: "Pasos múltiples, impulsor semiabierto y cerrado, columna de transmisión, cabezal de descarga sobre o bajo superficie",
-      capacity: "50 a 18,000 GPM",
-      head: "20 a 1,875 ft",
-      metallurgy: "Hierro gris · Bronce · Aceros aleados · Aceros inoxidables · Dúplex · Materiales exóticos"
-    },
-    {
-      code: "GM-MIX-01",
-      name: "Bomba de Flujo Mixto",
-      enName: "Mixed flow pump",
-      img: "/images/products/BombaFlujoMix.png",
-      sizes: "8\" a 36\"",
-      capacity: "1,000 a 37,000 GPM",
-      impeller: "Número máximo de impulsores: 4",
-      head: "20 a 100 ft",
-      metallurgy: "Hierro gris · Bronce · Aceros aleados · Aceros inoxidables · CD4MCU al 25% cromo"
-    },
-    {
-      code: "GM-AXI-01",
-      name: "Bomba de Flujo Axial",
-      enName: "Axial flow pump",
-      img: "/images/products/BombaFlujoAxi.png",
-      sizes: "8\" a 36\"",
-      capacity: "1,000 a 42,000 GPM",
-      impeller: "Número máximo de impulsores: 4",
-      head: "20 a 100 ft",
-      metallurgy: "Hierro gris · Bronce · Aceros aleados · Aceros inoxidables · CD4MCU al 25% cromo"
-    }
-  ],
-  "Desplazamiento Positivo": [
-    {
-      code: "GM-DP-CHA-01",
-      name: "Bomba de Desplazamiento Positivo de Charnela",
-      enName: "Positive displacement swing pump",
-      img: "/images/products/BombaDezpPosChanelaa.png",
-      config: "Maquinada 100% con tolerancia de 0.002\" entre machos y hembras. Sello mecánico. Chumaceras encajonadas.",
-      sizes: "6\"x8\" y 10\"x10\"",
-      capacity: "Hasta 90 m³/hr"
-    },
-    {
-      code: "GM-DP-AD-01",
-      name: "Bomba de Desplazamiento Positivo de Aspas Deslizantes",
-      enName: "Sliding vane positive displacement pump",
-      img: "/images/products/BombaDezlPosAspasDez.png",
-      applications: "Fluidos altamente viscosos",
-      config: "Flujos constantes, altas cargas, operación segura. Elemento rotativo alineado por chumaceras y baleros.",
-      differentiator: "Componentes hidráulicos (aspas y camisa) de vida extendida por proceso de fabricación especializado"
-    }
-  ],
-  "Especiales": [
-    {
-      code: "GM-VAC-01",
-      name: "Bomba de Vacío de Anillo Líquido",
-      enName: "Liquid ring vacuum pump",
-      img: "/images/products/BombaVac.png",
-      config: "Doble impulsor",
-      capacity: "Vacío: 20\" a 29\" Hg | Aire enrarecido: 600 a 1,000 CFM",
-      metallurgy: "Hierro gris · Aceros aleados · Acero al bajo carbono · Aceros aleados S300, S400"
-    },
-    {
-      code: "GM-HF-01",
-      name: "Bomba Centrífuga Horizontal Heavy Flow",
-      enName: "Heavy flow horizontal centrifugal pump",
-      img: "/images/products/BombaHeavyFlow.png",
-      applications: "Aguas pesadas · Lodos de baja densidad · Procesos de trabajo severo y continuo",
-      sizes: "1\" a 18\"",
-      capacity: "10 a 30,000 GPM",
-      head: "45 a 295 ft",
-      metallurgy: "Aleaciones de alta dureza con alto contenido de níquel y/o cromo",
-      differentiator: "Diseñada para trabajo severo que demanda diversidad de aplicaciones y procesos"
-    }
-  ],
-  "Laboratorio": [
-    {
-      code: "GM-LAB",
-      name: "Laboratorio de Pruebas Hidráulicas GM",
-      enName: "GM performance test laboratory",
-      img: "/images/products/LabPru.png",
-      accreditation: "NMX-EC-17025-IMNC-2018 / ISO/IEC 17025:2017\nNo. MM-214-038/09 (Vigente desde 09-01-2009)",
-      differentiator: "Primer laboratorio de pruebas hidráulicas para equipos de bombeo en México con acreditación bajo NMX-EC-17025 con alcance NOM-001-ENER-2014.",
-      methods: "• NOM-001-ENER-2014: Eficiencia energética de bombas verticales tipo turbina con motor externo eléctrico vertical.\n• NOM-010-ENER-2004: Eficiencia energética del conjunto motor-bomba sumergible tipo pozo profundo.\n• Método interno: Condiciones de operación de bombas verticales flujo mixto y/o axial.\n• Método interno: Condiciones de operación de bombas centrífugas horizontales (uso general, Vortex, Inatascable, ANSI y API).",
-      scope: "Pruebas a equipos de bombeo horizontales, verticales flujo mixto y axial. Servicio disponible para clientes externos nacionales e internacionales."
-    }
-  ]
-};
+const ALL = "todas";
+type Selection = { groupId: string; categoryId: string };
 
 export default function CatalogoPage() {
-  const [activeTab, setActiveTab] = useState<Category>(CATEGORIES[0]);
-  const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
-
   return (
-    <div className="pt-28 pb-24 bg-[var(--color-paper)] min-h-screen relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader 
-          eyebrow="CATÁLOGO OFICIAL" 
-          title="Soluciones de Bombeo de Alto Rendimiento" 
-          align="left"
-          as="h1"
-        />
-
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-3 mb-16 pb-4">
-          {CATEGORIES.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={`relative px-6 py-2.5 rounded-full font-sans text-sm md:text-base font-semibold transition-all duration-300 ${
-                activeTab === category 
-                  ? "text-[var(--color-paper)] bg-[var(--color-ink)] shadow-lg shadow-[var(--color-ink)]/20 scale-105" 
-                  : "text-[var(--color-steel)] bg-white border border-[var(--color-steel)]/20 hover:text-[var(--color-ink)] hover:border-[var(--color-ink)]/30 hover:bg-gray-50"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        {/* Product Grid */}
-        <div className="min-h-[600px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            >
-              {PRODUCTS[activeTab].map((product, idx) => (
-                <motion.div
-                  key={product.code}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="h-full"
-                >
-                  <ProductCard
-                    code={product.code}
-                    name={product.name}
-                    imageSrc={product.img}
-                    onClick={() => setSelectedProduct(product)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Modal */}
-      <ProductModal 
-        product={selectedProduct} 
-        onClose={() => setSelectedProduct(null)} 
-      />
-    </div>
+    <Suspense fallback={<CatalogoView categoryParam={null} />}>
+      <CatalogoWithParams />
+    </Suspense>
   );
 }
 
+// Permite enlazar directamente a una categoría: /catalogo?categoria=verticales
+function CatalogoWithParams() {
+  const categoryParam = useSearchParams().get("categoria");
+  return <CatalogoView key={categoryParam ?? ""} categoryParam={categoryParam} />;
+}
+
+function CatalogoView({ categoryParam }: { categoryParam: string | null }) {
+  const [selection, setSelection] = useState<Selection>(() => {
+    const match = findCategory(categoryParam);
+    return match
+      ? { groupId: match.group.id, categoryId: match.category.id }
+      : { groupId: CATALOG[0].id, categoryId: ALL };
+  });
+  const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
+  const closeModal = useCallback(() => setSelectedProduct(null), []);
+
+  const group = CATALOG.find((item) => item.id === selection.groupId) ?? CATALOG[0];
+  const visibleCategories = selection.categoryId === ALL
+    ? group.categories
+    : group.categories.filter((category) => category.id === selection.categoryId);
+  const groupCount = group.categories.reduce((sum, category) => sum + category.items.length, 0);
+
+  return (
+    <div className="min-h-screen bg-[var(--color-paper)] pb-24">
+      <header className="relative overflow-hidden bg-[var(--color-ink)] pb-16 pt-36 text-white">
+        <Isotipo variant="dark" className="pointer-events-none absolute -right-10 top-24 w-[26rem] opacity-[0.12] max-md:hidden" />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="flex items-center gap-3 font-sans text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-sky)]">
+            <span className="h-px w-10 bg-[var(--color-brass)]" aria-hidden="true" />
+            Catálogo
+          </p>
+          <h1 className="mt-5 max-w-4xl font-display text-5xl font-bold uppercase leading-[0.92] tracking-[-0.02em] sm:text-7xl">
+            Equipos para mover cualquier proceso
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
+            Bombas fabricadas por GM, líneas NOV Mono y Moyno, y los equipos de las marcas que representamos. Abre cada ficha para ver rangos, materiales y aplicaciones.
+          </p>
+          <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-4 border-t border-white/15 pt-6">
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">Equipos y soluciones</dt>
+              <dd className="font-display text-4xl font-bold">{CATALOG_ITEM_COUNT}</dd>
+            </div>
+            {CATALOG.map((item) => (
+              <div key={item.id}>
+                <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">{item.label}</dt>
+                <dd className="font-display text-4xl font-bold text-[var(--color-sky)]">
+                  {item.categories.reduce((sum, category) => sum + category.items.length, 0)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </header>
+
+      <div className="sticky top-20 z-30 border-b border-[var(--color-steel)]/15 bg-white/95 backdrop-blur-md lg:top-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div role="tablist" aria-label="Línea de productos" className="flex gap-1 overflow-x-auto pt-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {CATALOG.map((item) => {
+              const active = item.id === group.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setSelection({ groupId: item.id, categoryId: ALL })}
+                  className={cn(
+                    "relative shrink-0 px-4 pb-3 pt-2 font-heading text-lg font-semibold uppercase tracking-wide transition-colors",
+                    active ? "text-[var(--color-ink)]" : "text-[var(--color-steel)] hover:text-[var(--color-ink)]",
+                  )}
+                >
+                  {item.label}
+                  <span className={cn("absolute inset-x-4 bottom-0 h-[3px] bg-[var(--color-brass)] transition-transform", active ? "scale-x-100" : "scale-x-0")} />
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex gap-2 overflow-x-auto py-3 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible [&::-webkit-scrollbar]:hidden" aria-label={`Categorías de ${group.label}`}>
+            {[{ id: ALL, label: `Todas (${groupCount})` }, ...group.categories.map((category) => ({ id: category.id, label: `${category.label} (${category.items.length})` }))].map((chip) => {
+              const active = selection.categoryId === chip.id;
+              return (
+                <button
+                  key={chip.id}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelection({ groupId: group.id, categoryId: chip.id })}
+                  className={cn(
+                    "shrink-0 rounded-full border px-4 py-1.5 font-sans text-sm font-medium transition-colors",
+                    active
+                      ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-white"
+                      : "border-[var(--color-steel)]/25 bg-white text-[var(--color-ink)]/75 hover:border-[var(--color-ink)]/40 hover:text-[var(--color-ink)]",
+                  )}
+                >
+                  {chip.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-6 border-b border-[var(--color-steel)]/15 py-10 md:flex-row md:items-end md:justify-between">
+          <p className="max-w-2xl text-lg leading-relaxed text-[var(--color-ink)]/75">{group.description}</p>
+          {group.lineLogos && (
+            <ul className="flex flex-wrap items-center gap-3" aria-label="Líneas incluidas">
+              {group.lineLogos.map((line) => (
+                <li key={line.name} className="relative h-10 w-24">
+                  <Image src={line.logo} alt={line.name} fill sizes="96px" className="object-contain" />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {visibleCategories.map((category) => (
+          <section key={`${group.id}-${category.id}`} className="pt-12" aria-labelledby={`categoria-${category.id}`}>
+            <div className="mb-6 flex items-baseline gap-4">
+              <h2 id={`categoria-${category.id}`} className="font-display text-3xl font-bold uppercase tracking-[-0.01em] text-[var(--color-ink)] sm:text-4xl">
+                {category.label}
+              </h2>
+              <span className="h-px flex-1 bg-[var(--color-steel)]/20" aria-hidden="true" />
+              <span className="font-sans text-sm font-medium text-[var(--color-steel)]">
+                {category.items.length} {category.items.length === 1 ? "equipo" : "equipos"}
+              </span>
+            </div>
+            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {category.items.map((product) => (
+                <li key={product.slug} className="h-full">
+                  <ProductCard product={product} onClick={() => setSelectedProduct(product)} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+
+        <section className="mt-24 grid gap-10 border-t border-[var(--color-steel)]/15 pt-16 lg:grid-cols-[0.8fr_1.2fr]" aria-labelledby="technical-library-title">
+          <div>
+            <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Biblioteca técnica</p>
+            <h2 id="technical-library-title" className="mt-3 font-display text-4xl font-bold uppercase tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl">Documentos para tu proyecto</h2>
+            <p className="mt-4 text-lg leading-relaxed text-[var(--color-ink)]/70">Catálogos y fichas del material proporcionado por GM. Confirma con ingeniería la versión y el alcance aplicables antes de especificar un equipo.</p>
+          </div>
+          <ul className="divide-y divide-[var(--color-steel)]/15 border-y border-[var(--color-steel)]/15">
+            {TECHNICAL_DOCUMENTS.map((document) => (
+              <li key={document.href}>
+                <a href={document.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-5 py-5 transition-colors hover:bg-[var(--color-mist)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center bg-[var(--color-ink)] text-[var(--color-sky)]"><FileText className="h-5 w-5" aria-hidden="true" /></span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-heading text-xl font-semibold text-[var(--color-ink)]">{document.title}</span>
+                    <span className="block text-sm text-[var(--color-ink)]/65">{document.description}</span>
+                  </span>
+                  <span className="hidden shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-steel)] sm:block">{document.meta}</span>
+                  <Download className="h-5 w-5 shrink-0 text-[var(--color-brass)] transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <ProductModal product={selectedProduct} onClose={closeModal} />
+    </div>
+  );
+}

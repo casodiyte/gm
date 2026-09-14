@@ -1,338 +1,444 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Droplets, ArrowRight, Zap, Wrench, ShieldCheck, Fan, Gauge } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Factory,
+  FileSearch,
+  Handshake,
+  Settings,
+} from "lucide-react";
+import { Hero } from "@/components/home/Hero";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { ServiceCard } from "@/components/ui/ServiceCard";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { Hero } from "@/components/home/Hero";
+import { WordReveal } from "@/components/ui/WordReveal";
+import { ImageReveal, Reveal } from "@/components/ui/Reveal";
+import { Isotipo } from "@/components/ui/Isotipo";
+import { BRANDS, CONTACT, SITE } from "@/lib/site-data";
+import { SERVICES } from "@/lib/services-data";
+import { CATALOG_ITEM_COUNT, GM_FAMILY_COUNT } from "@/lib/catalog-data";
+
+const products = [
+  {
+    name: "Bombas verticales",
+    detail: "Turbina vertical, flujo mixto y flujo axial",
+    figure: "42,000",
+    unit: "gpm de caudal máximo",
+    image: "/images/catalogo/gm-turbina-vertical.webp",
+    categoryId: "verticales",
+  },
+  {
+    name: "Centrífugas horizontales",
+    detail: "Proceso ANSI, inatascable y Vortex",
+    figure: "4,000",
+    unit: "gpm",
+    image: "/images/catalogo/gm-ansi.webp",
+    categoryId: "horizontales",
+  },
+  {
+    name: "Caja partida y sellado",
+    detail: "Hasta 1,500 ft de carga total",
+    figure: "18,000",
+    unit: "gpm",
+    image: "/images/catalogo/gm-caja-partida.webp",
+    categoryId: "centrifugas",
+  },
+  {
+    name: "Servicio severo",
+    detail: "Heavy Flow, papel y acoplamiento directo",
+    figure: "30,000",
+    unit: "gpm",
+    image: "/images/catalogo/gm-heavy-flow.webp",
+    categoryId: "especiales",
+  },
+  {
+    name: "Desplazamiento positivo",
+    detail: "Charnela, aspas deslizantes y vacío",
+    figure: "90",
+    unit: "m³/h",
+    image: "/images/catalogo/gm-aspas-deslizantes.webp",
+    categoryId: "desplazamiento-positivo",
+  },
+  {
+    name: "Cavidades progresivas",
+    detail: "Líneas NOV Mono y Moyno",
+    figure: "6",
+    unit: "líneas",
+    image: "/images/catalogo/nov-serie-2000.webp",
+    categoryId: "cavidades-progresivas",
+  },
+  {
+    name: "Agitación y mezcla",
+    detail: "Chemineer, Prochem, Greerco y Kenics",
+    figure: "4",
+    unit: "marcas",
+    image: "/images/catalogo/nov-prochem-agitador-entrada-lateral.webp",
+    categoryId: "mezcla",
+  },
+] as const;
+
+const featuredServiceTitles = [
+  "Equipos de bombeo",
+  "Motores eléctricos",
+  "Soluciones electromecánicas",
+  "Sellos mecánicos",
+  "Tratamiento de agua",
+  "Rehabilitación de equipos",
+];
+const featuredServices = SERVICES.filter((service) => featuredServiceTitles.includes(service.title));
+
+const featuredBrandSlugs = ["nov", "vogelsang", "tsurumi", "latty", "exatta", "forbes-marshall", "temisa", "sje-rhombus"];
+const featuredBrands = featuredBrandSlugs
+  .map((slug) => BRANDS.find((brand) => brand.slug === slug))
+  .filter((brand) => brand !== undefined);
+
+const sectors = [
+  "Agua y tratamiento",
+  "Azúcar",
+  "Minería",
+  "Papel",
+  "Alimentos y bebidas",
+  "Aceites",
+  "Química",
+  "Manufactura",
+] as const;
+
+const processSteps = [
+  {
+    number: "01",
+    title: "Entender la operación",
+    description: "Revisamos fluido, caudal, carga, temperatura, sólidos y condiciones de instalación.",
+    icon: FileSearch,
+  },
+  {
+    number: "02",
+    title: "Definir la solución",
+    description: "Relacionamos hidráulica, materiales, equipo, sellado, control y alcance de servicio.",
+    icon: Settings,
+  },
+  {
+    number: "03",
+    title: "Fabricar o integrar",
+    description: "Ejecutamos fabricación GM, rehabilitación o integración de tecnología especializada.",
+    icon: Factory,
+  },
+  {
+    number: "04",
+    title: "Acompañar la decisión",
+    description: "Entregamos información técnica para selección, puesta en servicio y mantenimiento.",
+    icon: Handshake,
+  },
+] as const;
+
+const stats = [
+  { value: `+${SITE.yearsOfExperience}`, label: "Años de experiencia" },
+  { value: String(GM_FAMILY_COUNT), label: "Familias de bombas GM" },
+  { value: String(BRANDS.length), label: "Marcas representadas" },
+] as const;
 
 export default function Home() {
-  const router = useRouter();
-
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen bg-[var(--color-paper)]">
       <Hero />
 
-      {/* Trust Bar (Dark Glassmorphism) */}
-      <section className="relative z-30 -mt-8 mx-4 max-w-7xl sm:mx-8 lg:mx-auto lg:-mt-12">
-        <div className="container mx-auto px-4">
-          <div className="bg-[var(--color-ink)]/85 backdrop-blur-md border border-white/10 p-8 shadow-2xl grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 corner-brackets">
-            {[
-              { value: 20, suffix: "+", label: "Años de ingeniería aplicada" },
-              { value: 12, suffix: "", label: "Líneas de solución" },
-              { value: 16, suffix: "", label: "Equipos en catálogo" },
-              { value: 10, suffix: "+", label: "Marcas representadas" }
-            ].map((stat, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className={`flex flex-col items-center text-center px-4 md:px-6 ${index !== 3 ? 'md:border-r border-white/10' : ''}`}
-              >
-                <span className="font-display font-bold text-4xl lg:text-5xl text-[var(--color-brass)] mb-1.5 drop-shadow-md">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                </span>
-                <span className="font-mono text-[10px] sm:text-xs text-[var(--color-paper)]/80 uppercase tracking-widest">{stat.label}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Laboratorio EMA */}
-      <section className="py-24 bg-[var(--color-ink)] text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[50vw] h-full bg-[var(--color-brass)]/5 blur-3xl pointer-events-none rounded-bl-full" />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-sm bg-white/5 border border-[var(--color-brass)]/30 text-[var(--color-brass)] text-xs font-mono tracking-widest uppercase mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(202,166,112,0.15)]">
-                <ShieldCheck className="w-4 h-4" />
-                Laboratorio Acreditado EMA
-              </div>
-              <h2 className="font-display text-4xl md:text-5xl font-bold uppercase leading-tight mb-6">
-                Primer laboratorio de pruebas en México con <span className="text-[var(--color-brass)]">Acreditación EMA</span>
-              </h2>
-              <p className="font-sans text-lg text-white/70 leading-relaxed mb-8 border-l-4 border-[var(--color-brass)] pl-6">
-                Contamos con acreditación ISO/IEC 17025 (NMX-EC-17025-IMNC-2018) para pruebas hidráulicas a equipos de bombeo. Un diferenciador único que garantiza el rendimiento y la eficiencia energética avalados por las NOM-001-ENER-2014 y NOM-010-ENER-2004.
+      <section className="relative overflow-hidden bg-[var(--color-mist)] py-24 lg:py-32" aria-labelledby="productos-title">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(0,46,95,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(0,46,95,.045)_1px,transparent_1px)] [background-size:48px_48px]"
+          aria-hidden="true"
+        />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="mb-5 flex items-center gap-3 font-sans text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-steel)]">
+                <Isotipo className="h-5 w-5" />
+                Catálogo
               </p>
-              <Button asChild className="bg-transparent border border-[var(--color-brass)] text-[var(--color-brass)] hover:bg-[var(--color-brass)] hover:text-[var(--color-ink)]">
-                <Link href="/catalogo">Conocer alcance de pruebas</Link>
-              </Button>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-[4/3] rounded-sm overflow-hidden corner-brackets p-2 border border-white/10"
-            >
-               <div className="relative w-full h-full bg-[#151a24]">
-                  <Image 
-                    src="/images/sectores/service_electromec_1784677840904.jpg" 
-                    alt="Laboratorio de Pruebas GM"
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity duration-500"
-                  />
-               </div>
-            </motion.div>
+              <WordReveal id="productos-title" as="h2" text="Nuestros productos" className="font-display text-5xl font-bold uppercase leading-[0.9] tracking-[-0.02em] text-[var(--color-ink)] sm:text-7xl" />
+              <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--color-ink)]/70">
+                {GM_FAMILY_COUNT} familias de bombas fabricadas por GM y {CATALOG_ITEM_COUNT - GM_FAMILY_COUNT} equipos más de las líneas que integramos.
+              </p>
+            </div>
+            <Button asChild size="lg" className="w-fit"><Link href="/catalogo">Explorar el catálogo <ArrowRight /></Link></Button>
           </div>
-        </div>
-      </section>
 
-      {/* Sectores que atendemos */}
-      <section className="py-24 bg-[var(--color-paper)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader 
-            eyebrow="Sectores" 
-            title="Industrias que servimos" 
-            align="center"
-            className="mb-16"
-          />
-          <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto mt-12">
-            {[
-              "Agua y tratamiento",
-              "Minera",
-              "Azucarera",
-              "Petroquímica",
-              "Agrícola",
-              "Aceitera",
-              "Cementera",
-              "Papelera",
-              "Química",
-              "Industria en general"
-            ].map((sector, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-                className="group relative"
-              >
-                <div className="px-6 py-3 border border-[var(--color-steel)]/20 bg-white text-[var(--color-ink)] font-sans text-sm md:text-base font-medium rounded-full cursor-pointer hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)] hover:border-[var(--color-ink)] transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1">
-                  {sector}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Preview Catálogo */}
-      <section className="py-24 bg-white border-t border-[var(--color-steel)]/10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <SectionHeader 
-              eyebrow="Catálogo destacado" 
-              title="Un catálogo pensado por ingenieros, para ingenieros"
-              className="mb-0"
-            />
-            <Button variant="outline" asChild className="shrink-0">
-              <Link href="/catalogo">Ver catálogo completo <ArrowRight className="ml-2 w-4 h-4" /></Link>
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { code: "GM-CENT-ANSI", name: "Centrífuga ANSI", img: "/images/products/BombaCentriANSI.png" },
-              { code: "GM-CENT-001", name: "Centrífuga Estándar", img: "/images/products/BombaCentri.png" },
-              { code: "GM-AXI-001", name: "Bomba de Flujo Axial", img: "/images/products/BombaFlujoAxi.png" },
-              { code: "GM-DP-ASP", name: "Aspas Deslizantes", img: "/images/products/BombaDezlPosAspasDez.png" },
-            ].map((product, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="h-full"
-              >
-                <ProductCard 
-                  code={product.code}
-                  name={product.name}
-                  imageSrc={product.img}
-                  onClick={() => router.push("/catalogo")}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Preview Servicios */}
-      <section className="py-24 bg-[var(--color-ink)] text-[var(--color-paper)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader 
-            eyebrow="Nuestras Capacidades" 
-            title="Servicios Especializados" 
-            theme="dark"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {[
-              { num: "01", title: "Equipos de bombeo", desc: "Fabricación y comercialización de bombas para todo proceso industrial.", icon: Droplets, imageSrc: "/images/sectores/service_bombeo_1784677820847.jpg" },
-              { num: "02", title: "Motores eléctricos", desc: "Suministro, rebobinado y diagnóstico de motores para servicio pesado.", icon: Zap, imageSrc: "/images/sectores/service_motores_1784677831770.jpg" },
-              { num: "03", title: "Soluciones electromecánicas", desc: "Integración de sistemas mecánicos y eléctricos a la medida.", icon: Wrench, imageSrc: "/images/sectores/service_electromec_1784677840904.jpg" },
-              { num: "04", title: "Sellos mecánicos", desc: "Sellado de alto desempeño para condiciones críticas.", icon: ShieldCheck, imageSrc: "/images/sectores/manufactura.jpg" },
-              { num: "05", title: "Turbinas de vapor", desc: "Suministro y mantenimiento de turbinas para generación y proceso.", icon: Fan, imageSrc: "/images/sectores/minero.jpg" },
-              { num: "06", title: "Válvulas de control", desc: "Instrumentación de control de flujo, presión y temperatura.", icon: Gauge, imageSrc: "/images/sectores/papelero.jpg" },
-            ].map((srv, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                <ServiceCard 
-                  number={srv.num}
-                  title={srv.title}
-                  description={srv.desc}
-                  Icon={srv.icon}
-                  imageSrc={srv.imageSrc}
-                />
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center">
-            <Button asChild>
-              <Link href="/servicios">Ver todos los servicios <ArrowRight className="ml-2 w-4 h-4" /></Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial */}
-      <section className="py-32 bg-[var(--color-paper)] relative overflow-hidden border-b border-[var(--color-steel)]/20">
-        <div className="absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-[var(--color-brass)]/20 -translate-x-4 -translate-y-4" />
-        <div className="absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-[var(--color-brass)]/20 translate-x-4 translate-y-4" />
-        
-        {/* Giant Quote Background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20rem] lg:text-[40rem] font-display font-bold text-[var(--color-steel)]/5 select-none pointer-events-none z-0 leading-none mt-10">
-          &ldquo;
-        </div>
-
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.div 
-              initial={{ width: 0 }}
-              whileInView={{ width: "4rem" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              className="h-1 bg-[var(--color-brass)] mx-auto mb-12" 
-            />
-            
-            <motion.blockquote 
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.05, delayChildren: 0.2 }
-                }
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="font-display font-medium text-3xl md:text-5xl text-[var(--color-ink)] leading-[1.2] mb-12 relative"
-            >
-              <span className="text-[var(--color-brass)] mr-2">&ldquo;</span>
-              {"La innovación tecnológica y la eficiencia energética son los pilares indispensables para construir una industria más competitiva, fuerte y sustentable.".split(" ").map((word, index) => (
-                <span key={index} className="inline-block mr-[0.25em] overflow-hidden pb-1">
-                  <motion.span
-                    variants={{
-                      hidden: { y: "100%", opacity: 0 },
-                      visible: { y: 0, opacity: 1, transition: { type: "spring", damping: 15, stiffness: 100 } }
-                    }}
-                    className="inline-block"
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {products.map((product, index) => {
+              const featured = index === 0;
+              const wide = index >= 5;
+              return (
+                <Reveal
+                  as="li"
+                  direction="scale"
+                  delay={index * 0.05}
+                  key={product.name}
+                  className={featured ? "sm:col-span-2 lg:row-span-2" : wide ? "sm:col-span-2" : undefined}
+                >
+                  <Link
+                    href={`/catalogo?categoria=${product.categoryId}`}
+                    className={`group relative flex h-full overflow-hidden border border-[var(--color-steel)]/15 bg-white transition-[border-color,box-shadow] duration-300 hover:border-[var(--color-brass)]/60 hover:shadow-[0_30px_70px_rgba(0,46,95,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)] ${featured ? "min-h-[26rem] flex-col lg:min-h-full" : wide ? "min-h-[13rem] flex-col sm:flex-row" : "min-h-[19rem] flex-col"}`}
                   >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
-              <span className="text-[var(--color-brass)] ml-1">&rdquo;</span>
-            </motion.blockquote>
-            
-            <motion.cite 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1.5, duration: 0.8 }}
-              className="font-mono text-sm tracking-[0.2em] text-[var(--color-steel)] uppercase not-italic flex items-center justify-center gap-4"
-            >
-              <span className="w-8 h-px bg-[var(--color-steel)]/50" />
-              Angélica Guerra, Directora General
-              <span className="w-8 h-px bg-[var(--color-steel)]/50" />
-            </motion.cite>
+                    <div className={`relative flex-1 ${featured ? "min-h-64" : wide ? "min-h-40 sm:min-h-0 sm:max-w-[45%]" : "min-h-40"}`}>
+                      <Image
+                        src={product.image}
+                        alt=""
+                        fill
+                        sizes={featured ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 25vw, 50vw"}
+                        className={`object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.05] ${featured ? "p-10" : "p-6"}`}
+                      />
+                    </div>
+                    <div className={`flex items-end justify-between gap-4 border-[var(--color-steel)]/10 ${featured ? "border-t p-7 sm:p-9" : wide ? "border-t p-5 sm:flex-1 sm:border-l sm:border-t-0 sm:p-7" : "border-t p-5"}`}>
+                      <div>
+                        <h3 className={`font-heading font-semibold uppercase leading-none tracking-wide text-[var(--color-ink)] ${featured ? "text-3xl sm:text-4xl" : "text-xl"}`}>
+                          {product.name}
+                        </h3>
+                        <p className="mt-2 text-sm text-[var(--color-ink)]/65">{product.detail}</p>
+                      </div>
+                      <p className="shrink-0 text-right">
+                        <span className={`block font-display font-bold leading-none text-[var(--color-brass)] ${featured ? "text-5xl sm:text-6xl" : "text-3xl"}`}>{product.figure}</span>
+                        <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--color-steel)]">{product.unit}</span>
+                      </p>
+                    </div>
+                    <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-[var(--color-brass)] transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
+                  </Link>
+                </Reveal>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section className="border-b border-[var(--color-steel)]/10 bg-white py-24 lg:py-28">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16">
+            <div>
+              <SectionHeader
+                eyebrow="Ingeniería verificable"
+                title="Pruebas hidráulicas para tomar mejores decisiones"
+                className="mb-7"
+              />
+              <Reveal delay={0.08}>
+                <p className="max-w-2xl border-l-4 border-[var(--color-brass)] pl-6 text-lg leading-relaxed text-[var(--color-ink)]/75">
+                  El laboratorio GM permite caracterizar el comportamiento hidráulico de equipos horizontales y verticales mediante variables de caudal, carga y desempeño. La información obtenida ayuda a validar, rehabilitar o seleccionar un sistema de bombeo.
+                </p>
+              </Reveal>
+              <Reveal className="mt-8 flex flex-wrap gap-3" delay={0.16}>
+                <Button asChild><Link href="/catalogo?categoria=laboratorio">Ver capacidad de pruebas <ArrowRight /></Link></Button>
+                <Button variant="outline" asChild><a href="/downloads/catalogo-general-gm.pdf" target="_blank" rel="noopener noreferrer">Consultar catálogo</a></Button>
+              </Reveal>
+            </div>
+            <ImageReveal className="corner-brackets aspect-[4/3] bg-[var(--color-ink)] p-2" delay={0.08}>
+              <div className="relative h-full w-full overflow-hidden bg-[var(--color-ink)]">
+                <Image
+                  src="/images/planta/laboratorio-pruebas-v2.webp"
+                  alt="Consola de instrumentación del laboratorio de pruebas hidráulicas GM"
+                  fill
+                  sizes="(min-width: 1024px) 52vw, 100vw"
+                  className="object-contain"
+                />
+              </div>
+            </ImageReveal>
           </div>
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="relative py-32 bg-[var(--color-ink)] overflow-hidden">
-        {/* Background Texture/Image */}
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src="/images/sectores/manufactura.jpg" 
-            alt="Ingeniería Industrial" 
-            fill
-            sizes="100vw"
-            className="object-cover opacity-20 mix-blend-luminosity scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)] via-[var(--color-ink)]/90 to-[var(--color-ink)]/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-ink)] via-transparent to-[var(--color-ink)]" />
-        </div>
+      <section className="relative overflow-hidden bg-[var(--color-ink-2)] text-white" aria-labelledby="nosotros-title">
+        <div className="grid lg:grid-cols-2">
+          <div className="relative flex min-h-[20rem] items-center justify-center overflow-hidden bg-white px-10 py-16 lg:min-h-[44rem]">
+            <div
+              className="pointer-events-none absolute inset-0 [background-image:linear-gradient(rgba(0,46,95,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,46,95,.05)_1px,transparent_1px)] [background-size:48px_48px]"
+              aria-hidden="true"
+            />
+            <Reveal direction="scale" className="relative aspect-[960/421] w-full max-w-md xl:max-w-lg">
+              <Image
+                src="/images/logo-horizontal.png"
+                alt="GM Corporativo"
+                fill
+                sizes="(min-width: 1280px) 512px, (min-width: 1024px) 448px, 80vw"
+                className="object-contain"
+              />
+            </Reveal>
+            <span className="brand-band absolute inset-x-0 bottom-0 h-2 lg:inset-x-auto lg:inset-y-0 lg:right-0 lg:h-auto lg:w-2" aria-hidden="true" />
+          </div>
 
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto flex flex-col items-center"
-          >
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-sm bg-white/5 border border-white/10 text-[var(--color-brass)] text-xs font-mono tracking-widest uppercase mb-8 backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-brass)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-brass)]"></span>
-              </span>
-              Soporte de ingeniería inmediato
-            </div>
-            
-            <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6 text-balance leading-tight">
-              ¿Cotizar un equipo o auditar tu sistema actual?
-            </h2>
-            
-            <p className="font-sans text-lg md:text-xl text-white/70 mb-12 max-w-2xl text-balance leading-relaxed">
-              Nuestros especialistas están listos para analizar tus requerimientos y diseñar la solución de bombeo más robusta y rentable.
+          <div className="relative flex flex-col justify-center px-6 py-16 sm:px-12 lg:py-24 xl:px-20">
+            <p className="relative flex items-center gap-3 font-sans text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-sky)]">
+              <span className="h-px w-10 bg-[var(--color-brass)]" aria-hidden="true" />
+              Nosotros
             </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-6 w-full sm:w-auto">
-              <Button size="lg" className="bg-[var(--color-brass)] text-[var(--color-ink)] hover:bg-white hover:text-[var(--color-ink)] transition-colors h-14 px-8 text-base font-semibold tracking-wide group rounded-sm shadow-[0_0_20px_rgba(202,166,112,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
-                <a href="https://wa.me/525546020434" target="_blank" rel="noopener noreferrer">
-                  Contactar por WhatsApp
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </Button>
-              <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white hover:text-[var(--color-ink)] h-14 px-8 text-base font-semibold tracking-wide group backdrop-blur-sm bg-white/5 rounded-sm" asChild>
-                <Link href="/contacto">
-                  Ir al formulario
-                </Link>
+            <div className="relative mt-6 flex items-end gap-5">
+              <span className="font-display text-[clamp(7rem,16vw,13rem)] font-bold leading-[0.78] tracking-[-0.04em] text-white">
+                {SITE.yearsOfExperience}
+              </span>
+              <span className="pb-3 font-display text-3xl font-semibold uppercase leading-[0.95] text-[var(--color-sky)] sm:text-4xl">
+                años de<br />experiencia
+              </span>
+            </div>
+            <WordReveal
+              id="nosotros-title"
+              as="h2"
+              text="Conocimiento técnico convertido en soluciones"
+              className="relative mt-10 max-w-xl font-display text-4xl font-bold uppercase leading-[0.95] tracking-[-0.015em] sm:text-5xl"
+            />
+            <Reveal delay={0.1}>
+              <p className="relative mt-6 max-w-xl text-lg leading-relaxed text-white/75">
+                Somos especialistas en brindar soluciones en sistemas de bombeo para impulsar la productividad de nuestros clientes. Respaldados por nuestra experiencia y una sólida red de aliados estratégicos en diferentes especialidades, transformamos el conocimiento técnico en soluciones eficientes de alto valor.
+              </p>
+            </Reveal>
+            <dl className="relative mt-10 grid max-w-xl grid-cols-2 border-y border-white/15">
+              {stats.slice(1).map((stat, index) => (
+                <div key={stat.label} className={`py-6 ${index === 0 ? "border-r border-white/15 pr-6" : "pl-6"}`}>
+                  <dd className="font-display text-5xl font-bold leading-none">{stat.value}</dd>
+                  <dt className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/60">{stat.label}</dt>
+                </div>
+              ))}
+            </dl>
+            <Reveal delay={0.16}>
+              <Link href="/nosotros" className="group relative mt-10 inline-flex items-center gap-3 font-heading text-xl font-semibold uppercase tracking-wide text-white">
+                Conoce nuestra historia
+                <span className="grid h-11 w-11 place-items-center rounded-full bg-[var(--color-brass)] transition-transform group-hover:translate-x-1">
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                </span>
+              </Link>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--color-mist)] py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader eyebrow="Servicios" title="Soluciones alrededor de tu proceso" description="Equipos, rehabilitación, sellado, control y soporte técnico para la operación de tu planta." />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featuredServices.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <Reveal as="article" direction="scale" delay={index * 0.055} key={service.num} className="group overflow-hidden border border-[var(--color-steel)]/15 bg-white">
+                  <div className="relative aspect-[16/9] overflow-hidden bg-[var(--color-ink)]">
+                    <Image src={service.imageSrc} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="scale-110 object-cover opacity-30 blur-lg" aria-hidden="true" />
+                    <Image src={service.imageSrc} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-contain opacity-90 transition duration-500 group-hover:scale-[1.025] group-hover:opacity-100" />
+                    <span className="absolute left-5 top-5 bg-[var(--color-ink)] px-2 py-1 font-mono text-xs font-semibold text-white">{service.num}</span>
+                  </div>
+                  <div className="p-6">
+                    <Icon className="h-8 w-8 text-[var(--color-brass)]" aria-hidden="true" />
+                    <h3 className="mt-5 font-heading text-2xl font-semibold text-[var(--color-ink)]">{service.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink)]/70">{service.desc}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+          <div className="mt-10 text-center"><Button asChild><Link href="/servicios">Ver todos los servicios <ArrowRight /></Link></Button></div>
+        </div>
+      </section>
+
+      <section className="border-b border-[var(--color-steel)]/10 bg-[var(--color-paper)] py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+            <div className="lg:sticky lg:top-32">
+              <SectionHeader
+                eyebrow="Método de trabajo"
+                title="Del problema de planta a una solución ejecutable"
+                description="No se trata sólo de vender un equipo: cada proyecto comienza con las variables reales de la operación."
+              />
+              <Button variant="outline" asChild>
+                <Link href="/contacto">Preparar requerimiento <ArrowRight /></Link>
               </Button>
             </div>
-          </motion.div>
+            <ol className="grid gap-5 sm:grid-cols-2">
+              {processSteps.map((step) => {
+                const Icon = step.icon;
+                return (
+                  <Reveal as="li" direction={Number(step.number) % 2 === 0 ? "right" : "left"} delay={(Number(step.number) - 1) * 0.06} key={step.number} className="relative min-h-64 overflow-hidden border border-[var(--color-steel)]/15 bg-white p-7 shadow-[0_16px_45px_rgba(0,46,95,0.055)]">
+                    <span className="absolute right-5 top-3 font-display text-7xl font-bold text-[var(--color-ink)]/[0.05]" aria-hidden="true">{step.number}</span>
+                    <div className="flex h-12 w-12 items-center justify-center bg-[var(--color-brass)]/10 text-[var(--color-brass)]">
+                      <Icon className="h-6 w-6" aria-hidden="true" />
+                    </div>
+                    <h3 className="mt-7 font-heading text-2xl font-semibold text-[var(--color-ink)]">{step.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink)]/70">{step.description}</p>
+                  </Reveal>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--color-mist)] py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+            <div>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Marcas representadas</p>
+              <WordReveal as="h2" text="Aliados estratégicos para resolver el proceso completo" className="mt-4 text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl" />
+              <Reveal delay={0.1}><p className="mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-ink)]/70">Además de las bombas GM, integramos tecnologías de fabricantes especializados en cavidades progresivas, mezcla, dosificación, sellado, vapor, automatización y manejo de fluidos.</p></Reveal>
+              <Reveal delay={0.16}><Button variant="outline" asChild className="mt-7"><Link href="/marcas">Conocer todas las marcas <ArrowRight /></Link></Button></Reveal>
+            </div>
+            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+              {featuredBrands.map((brand, index) => (
+                <Reveal as="li" direction="scale" delay={index * 0.05} key={brand.slug} className="flex min-h-28 items-center justify-center border border-[var(--color-steel)]/15 bg-white p-4 shadow-sm">
+                  <div className="relative h-14 w-full"><Image src={brand.logo} alt={brand.name} fill sizes="(min-width: 1280px) 12vw, 25vw" className="object-contain" /></div>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[var(--color-steel)]/10 bg-[var(--color-paper)] py-20">
+        <div className="container mx-auto px-4 text-center sm:px-6 lg:px-8">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Industrias atendidas</p>
+          <WordReveal as="h2" text="Ingeniería que se adapta al fluido y al proceso" className="mx-auto mt-4 max-w-3xl text-balance font-display text-4xl font-bold uppercase tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl" />
+          <ul className="mx-auto mt-10 flex max-w-5xl flex-wrap justify-center gap-3">
+            {sectors.map((sector, index) => <Reveal as="li" direction="scale" delay={index * 0.035} key={sector} className="rounded-full border border-[var(--color-steel)]/20 bg-white px-5 py-2.5 text-sm font-medium text-[var(--color-ink)]">{sector}</Reveal>)}
+          </ul>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden border-y border-[var(--color-steel)]/10 bg-white py-28">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[22rem] font-bold leading-none text-[var(--color-ink)]/[0.035] lg:text-[38rem]" aria-hidden="true">&ldquo;</div>
+        <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8">
+          <div className="mx-auto mb-10 h-1 w-16 bg-[var(--color-brass)]" />
+          <WordReveal
+            as="blockquote"
+            text="La innovación tecnológica y la eficiencia energética son los pilares indispensables para construir una industria más competitiva, fuerte y sustentable."
+            className="mx-auto max-w-5xl text-balance font-display text-3xl font-semibold leading-[1.15] text-[var(--color-ink)] sm:text-4xl lg:text-5xl"
+          />
+          <Reveal delay={0.2}>
+            <cite className="mt-10 flex items-center justify-center gap-4 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)] not-italic sm:text-sm">
+              <span className="h-px w-8 bg-[var(--color-steel)]/40" />
+              Angélica Guerra, Directora General
+              <span className="h-px w-8 bg-[var(--color-steel)]/40" />
+            </cite>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[var(--color-ink)] py-24 text-white">
+        <div className="absolute inset-0 opacity-15"><Image src="/images/sectores/aguas.webp" alt="" fill sizes="100vw" className="object-cover" /></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-ink)] via-[var(--color-ink)]/95 to-[var(--color-ink)]/70" />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-sky)]">Atención de ingeniería</p>
+            <WordReveal as="h2" text="Cuéntanos qué fluido mueves y qué necesita tu proceso." className="mt-4 text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] sm:text-5xl" />
+            <Reveal delay={0.1}><p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">Comparte caudal, carga, temperatura y condiciones de operación. Nuestro equipo podrá orientarte hacia una solución o una revisión técnica.</p></Reveal>
+            <Reveal className="mt-8 flex flex-col gap-3 sm:flex-row" delay={0.16}>
+              <Button asChild className="bg-[var(--color-brass)] hover:bg-white hover:text-[var(--color-ink)]"><a href={`https://wa.me/${CONTACT.whatsappInternational}`} target="_blank" rel="noopener noreferrer">Contactar por WhatsApp <ArrowRight /></a></Button>
+              <Button variant="outline" asChild className="border-white/40 text-white hover:border-white hover:bg-white hover:text-[var(--color-ink)]"><Link href="/contacto">Preparar solicitud</Link></Button>
+            </Reveal>
+            </div>
+            <Reveal as="aside" direction="right" className="border border-white/15 bg-white/[0.055] p-7 backdrop-blur-sm sm:p-9">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-sky)]">Para comenzar</p>
+              <h3 className="mt-3 font-heading text-2xl font-semibold">Ten a la mano estos datos</h3>
+              <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {["Fluido y sólidos", "Caudal requerido", "Carga o presión", "Temperatura", "Materiales disponibles", "Ubicación del proyecto"].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-sm text-white/80">
+                    <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--color-sky)]" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-7 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/60">Si aún no cuentas con todos los datos, comparte lo disponible y te ayudaremos a ordenar el requerimiento.</p>
+            </Reveal>
+          </div>
         </div>
       </section>
     </div>

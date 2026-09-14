@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
+/* Paleta y tipografía según la Línea Gráfica GM Corporativo 2026 */
 @theme inline {
-  --color-ink: #002e5f; /* Azul Marino */
-  --color-ink-2: #002247; 
+  --color-ink: #002e5f; /* Azul Marino (primario) */
+  --color-ink-2: #002247; /* Azul Marino profundo para capas y bordes */
   --color-paper: #FFFFFF;
-  --color-steel: #5e6972; /* Gris */
-  --color-brass: #108bcc; /* Azul Cielo */
-  --color-rust: #b65a24; /* Cobre Industrial */
+  --color-steel: #5e6972; /* Gris (secundario) */
+  --color-brass: #108bcc; /* Azul Cielo (primario) */
+  --color-sky: #87c5e5; /* Tinte de Azul Cielo para texto pequeño sobre marino */
+  --color-rust: #b65a24; /* Cobre Industrial (secundario) */
+  --color-mist: #eef5f9; /* Fondo claro de apoyo */
   --color-white: #FFFFFF;
 
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
 
+  /* Barlow Condensed: titulares. Inter: textos, datos y etiquetas. */
   --font-display: var(--font-barlow-condensed);
   --font-heading: var(--font-barlow-condensed);
   --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-mono: var(--font-inter);
 }
 
 :root {
@@ -47,11 +51,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 15, 28, 0.8);
+  background: var(--color-mist);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.8);
+  background: var(--color-steel);
   border-radius: 0;
 }
 
@@ -61,7 +65,7 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(75, 85, 99, 0.8) rgba(10, 15, 28, 0.8);
+  scrollbar-color: var(--color-steel) var(--color-mist);
 }
 
 @layer utilities {
@@ -92,5 +96,8 @@ body {
     right: 0;
     border-width: 0 2px 2px 0;
   }
-  /* Optional extra corners if needed via extra pseudo elements or nested spans, but ::before and ::after give 2 corners. */
+  /* Banda de marca: franja delgada azul cielo + azul marino */
+  .brand-band {
+    background: linear-gradient(90deg, var(--color-brass) 0 62%, var(--color-ink) 62% 100%);
+  }
 }

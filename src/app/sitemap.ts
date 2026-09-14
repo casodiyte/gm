@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 import { BLOG_POSTS } from '@/lib/blog-data';
+import { SITE } from '@/lib/site-data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://gmcorporativoindustrial.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || SITE.url;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
@@ -12,9 +13,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/marcas',
     '/blog',
     '/contacto',
+    '/privacidad',
+    '/terminos',
   ].map((route) => ({
     url: `${BASE_URL}${route}`,
-    lastModified: new Date(),
+    lastModified: new Date('2026-08-18'),
     changeFrequency: 'weekly' as const,
     priority: route === '' ? 1 : 0.8,
   }));

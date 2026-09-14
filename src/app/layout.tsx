@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, Inter, JetBrains_Mono } from "next/font/google";
+import { Barlow_Condensed, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { WhatsAppFAB } from "@/components/ui/WhatsAppFAB";
+import { ChatBot } from "@/components/chatbot/ChatBot";
+import { MotionProvider } from "@/components/providers/MotionProvider";
+import { CONTACT, SITE } from "@/lib/site-data";
 
 const barlowCondensed = Barlow_Condensed({
   variable: "--font-barlow-condensed",
@@ -17,44 +19,43 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  weight: "400",
-});
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gmcorporativo.com.mx"),
+  metadataBase: new URL(SITE.url),
   title: {
-    default: "Grupo Industrial GM | Ingeniería y Fabricación de Equipo de Bombeo",
-    template: "%s | Grupo Industrial GM",
+    default: "GM Corporativo Industrial | Soluciones en sistemas de bombeo",
+    template: "%s | GM Corporativo Industrial",
   },
-  description: "Líderes en fabricación, diseño e ingeniería de procesos de bombeo industrial en México. Contamos con laboratorio de pruebas acreditado por EMA e ISO 9001.",
+  description: SITE.description,
   keywords: [
     "bombas industriales",
     "fabricante de equipos de bombeo",
-    "ingeniería de fluidos",
-    "bombeo industrial México",
-    "laboratorio EMA pruebas de bombeo",
-    "bombas centrífugas",
     "sistemas de bombeo",
+    "bombeo industrial México",
+    "pruebas hidráulicas de bombas",
+    "bombas centrífugas",
+    "rehabilitación de bombas",
     "mantenimiento de bombas"
   ],
-  authors: [{ name: "Grupo Industrial GM" }],
-  creator: "Grupo Industrial GM",
-  publisher: "Grupo Industrial GM",
+  authors: [{ name: SITE.name }],
+  creator: SITE.name,
+  publisher: SITE.name,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Grupo Industrial GM | Expertos en Bombeo Industrial",
-    description: "Soluciones integrales en sistemas de bombeo, fabricación, diseño y mantenimiento. Más de 45 años de excelencia.",
-    url: "https://gmcorporativo.com.mx",
-    siteName: "Grupo Industrial GM",
+    title: "GM Corporativo Industrial | Soluciones en sistemas de bombeo",
+    description: `Más de ${SITE.yearsOfExperience} años de experiencia en fabricación, rehabilitación y soporte para sistemas de bombeo y proceso.`,
+    url: SITE.url,
+    siteName: SITE.name,
     locale: "es_MX",
     type: "website",
+    images: [{ url: "/opengraph-image", alt: SITE.name }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Grupo Industrial GM | Bombeo Industrial",
-    description: "Ingeniería de procesos de bombeo, fabricación y laboratorio acreditado EMA.",
+    title: "GM Corporativo Industrial | Soluciones en sistemas de bombeo",
+    description: SITE.description,
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -72,20 +73,20 @@ export const metadata: Metadata = {
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Grupo Industrial GM, S.A. de C.V.",
-  "url": "https://gmcorporativo.com.mx",
-  "logo": "https://gmcorporativo.com.mx/logo.png",
-  "description": "Fabricante especializado en equipo de bombeo industrial e ingeniería de fluidos, con laboratorio de pruebas acreditado por EMA.",
-  "foundingDate": "1987",
-  "telephone": "+525553052003",
+  "name": SITE.legalName,
+  "url": SITE.url,
+  "logo": `${SITE.url}/images/logo-horizontal.png`,
+  "description": SITE.description,
+  "telephone": CONTACT.phones[0].href,
+  "email": CONTACT.email,
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Estado de México",
+    "streetAddress": "Carretera Lago de Guadalupe, San Mateo Tecoloapan",
+    "addressLocality": "Atizapán de Zaragoza",
+    "addressRegion": "Estado de México",
+    "postalCode": "52920",
     "addressCountry": "MX"
-  },
-  "sameAs": [
-    "https://www.linkedin.com/company/grupo-industrial-gm"
-  ]
+  }
 };
 
 export default function RootLayout({
@@ -96,7 +97,7 @@ export default function RootLayout({
   return (
       <html
         lang="es-MX"
-        className={`${barlowCondensed.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+        className={`${barlowCondensed.variable} ${inter.variable} h-full antialiased`}
       >
       <head>
         <script
@@ -104,13 +105,21 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[var(--color-paper)] text-[var(--color-ink)] selection:bg-[var(--color-brass)] selection:text-[var(--color-ink)]">
-        <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
-        <WhatsAppFAB />
+      <body className="min-h-full flex flex-col font-sans bg-[var(--color-paper)] text-[var(--color-ink)] selection:bg-[var(--color-brass)] selection:text-white">
+        <a
+          href="#main-content"
+          className="fixed left-4 top-4 z-[200] -translate-y-24 rounded bg-white px-4 py-3 font-sans font-semibold text-[var(--color-ink)] shadow-xl transition-transform focus:translate-y-0"
+        >
+          Saltar al contenido
+        </a>
+        <MotionProvider>
+          <Navbar />
+          <main id="main-content" tabIndex={-1} className="flex-grow outline-none">
+            {children}
+          </main>
+          <Footer />
+          <ChatBot />
+        </MotionProvider>
       </body>
     </html>
   );

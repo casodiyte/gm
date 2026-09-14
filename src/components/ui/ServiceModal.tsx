@@ -1,36 +1,93 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight } from "lucide-react";
-import { LucideIcon } from "lucide-react";
-
-export type ServiceDetails = {
-  num: string;
-  title: string;
-  desc: string;
-  fullDesc: string;
-  icon: LucideIcon;
-  imageSrc: string;
-};
+import { ArrowRight, MessageCircle, X } from "lucide-react";
+import type { ServiceDetails } from "@/lib/services-data";
+import { BRANDS, CONTACT } from "@/lib/site-data";
+import { Isotipo } from "@/components/ui/Isotipo";
 
 interface ServiceModalProps {
   service: ServiceDetails | null;
   onClose: () => void;
 }
 
+const FOCUSABLE_ELEMENTS = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
 export function ServiceModal({ service, onClose }: ServiceModalProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
-    if (service) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
+    if (!service) return;
+
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    const previousOverflow = document.body.style.overflow;
+    const focusFrame = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+
+      const focusableElements = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS),
+      ).filter((element) => element.getClientRects().length > 0);
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        dialogRef.current.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
     };
-  }, [service]);
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+      window.requestAnimationFrame(() => {
+        if (previouslyFocused?.isConnected) previouslyFocused.focus();
+      });
+    };
+  }, [service, onClose]);
+
+  const brands = service
+    ? service.brands.map((slug) => BRANDS.find((brand) => brand.slug === slug)).filter((brand) => brand !== undefined)
+    : [];
+  const whatsappUrl = service
+    ? `https://wa.me/${CONTACT.whatsappInternational}?text=${encodeURIComponent(`Hola, me interesa el servicio de ${service.title.toLowerCase()}.`)}`
+    : "";
 
   return (
     <AnimatePresence>
@@ -40,71 +97,100 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-[var(--color-ink)]/80 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--color-ink-2)]/85 p-4 backdrop-blur-md sm:p-6"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="service-modal-title"
+            aria-describedby="service-modal-description"
+            tabIndex={-1}
+            initial={{ opacity: 0, scale: 0.97, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-4xl bg-[var(--color-paper)] rounded-sm overflow-hidden flex flex-col md:flex-row relative shadow-2xl corner-brackets border border-[var(--color-steel)]/20"
+            exit={{ opacity: 0, scale: 0.97, y: 24 }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            onClick={(event) => event.stopPropagation()}
+            className="relative grid max-h-[92vh] w-full max-w-5xl overflow-y-auto bg-white shadow-[0_40px_120px_rgba(0,20,45,0.5)] md:grid-cols-[0.9fr_1.1fr]"
           >
-            {/* Close Button */}
             <button
+              ref={closeButtonRef}
+              type="button"
               onClick={onClose}
-              className="absolute top-4 right-4 z-50 w-10 h-10 bg-white/10 hover:bg-[var(--color-brass)] backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:text-[var(--color-ink)] transition-colors duration-300"
+              className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[var(--color-ink)] shadow-md transition-colors hover:bg-[var(--color-ink)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]"
+              aria-label="Cerrar"
             >
-              <X className="w-5 h-5" />
+              <X className="h-5 w-5" />
             </button>
 
-            {/* Left/Top Image Section */}
-            <div className="w-full md:w-2/5 h-64 md:h-auto relative bg-[var(--color-ink)]">
-              <div className="absolute inset-0 z-0 opacity-40 mix-blend-luminosity">
-                <Image
-                  src={service.imageSrc}
-                  alt={service.title}
-                  fill
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#151a24] to-transparent z-10" />
-              
-              <div className="absolute bottom-6 left-6 z-20">
-                <div className="w-16 h-16 bg-[#1a212d]/80 backdrop-blur-md border border-[var(--color-steel)]/20 flex items-center justify-center rounded-lg shadow-lg mb-4">
-                  <service.icon strokeWidth={1.5} className="w-8 h-8 text-[var(--color-brass)]" />
-                </div>
-                <div className="font-mono text-lg text-[var(--color-brass)] font-semibold tracking-wider">
-                  /{service.num}
-                </div>
+            <div className="relative min-h-64 overflow-hidden bg-[var(--color-ink)] md:min-h-[34rem]">
+              <Image
+                src={service.imageSrc}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 45vw, 100vw"
+                className="scale-110 object-cover opacity-25 blur-xl"
+                aria-hidden="true"
+              />
+              <Image
+                src={service.imageSrc}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 45vw, 100vw"
+                className="object-contain"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink-2)] via-[var(--color-ink)]/40 to-[var(--color-ink)]/10" />
+              <Isotipo variant="dark" className="absolute left-6 top-6 w-12 opacity-90" />
+              <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+                <service.icon className="h-9 w-9 text-[var(--color-sky)]" strokeWidth={1.5} aria-hidden="true" />
+                <p className="mt-4 max-w-sm font-display text-2xl font-semibold uppercase leading-tight">{service.desc}</p>
               </div>
             </div>
 
-            {/* Right/Bottom Content Section */}
-            <div className="w-full md:w-3/5 p-8 md:p-12 flex flex-col relative bg-[#151a24]">
-              {/* Subtle Dot Pattern */}
-              <div className="absolute inset-0 bg-[radial-gradient(var(--color-steel)_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.03] z-0 pointer-events-none" />
-              
-              <div className="relative z-10">
-                <h3 className="font-heading font-bold text-3xl md:text-4xl text-white mb-2 uppercase leading-tight">
-                  {service.title}
-                </h3>
-                
-                <div className="w-12 h-1 bg-[var(--color-brass)] my-6" />
-                
-                <p className="font-sans text-lg md:text-xl text-[var(--color-paper)]/90 leading-relaxed font-light text-balance">
-                  {service.fullDesc}
-                </p>
+            <div className="relative flex flex-col p-8 sm:p-10 lg:p-12">
+              <p className="font-sans text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-steel)]">Servicio</p>
+              <h2 id="service-modal-title" className="mt-3 pr-10 font-display text-4xl font-bold uppercase leading-[0.95] tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl">
+                {service.title}
+              </h2>
+              <span className="mt-6 block h-1 w-14 bg-[var(--color-brass)]" aria-hidden="true" />
+              <p id="service-modal-description" className="mt-6 text-lg leading-relaxed text-[var(--color-ink)]/80">
+                {service.fullDesc}
+              </p>
 
-                <div className="mt-12">
-                  <button onClick={onClose} className="group flex items-center gap-3 px-6 py-3 border border-[var(--color-steel)]/20 hover:border-[var(--color-brass)] bg-white/5 hover:bg-[var(--color-brass)]/10 transition-all duration-300 rounded-sm w-fit">
-                    <span className="font-sans font-bold text-sm tracking-widest text-white group-hover:text-[var(--color-brass)] uppercase transition-colors">
-                      Entendido
-                    </span>
-                    <ArrowRight className="w-4 h-4 text-white group-hover:text-[var(--color-brass)] transition-colors" />
-                  </button>
-                </div>
+              <div className="mt-8 border-t border-[var(--color-steel)]/15 pt-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-steel)]">
+                  {brands.length > 0 ? "Marcas que integramos" : "Respaldo"}
+                </p>
+                {brands.length > 0 ? (
+                  <ul className="mt-4 flex flex-wrap gap-3">
+                    {brands.map((brand) => (
+                      <li key={brand.slug} className="relative h-14 w-28 border border-[var(--color-steel)]/15 bg-white">
+                        <Image src={brand.logo} alt={brand.name} fill sizes="112px" className="object-contain p-2" />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-3 text-base text-[var(--color-ink)]/75">Ingeniería, taller y personal técnico de GM.</p>
+                )}
+              </div>
+
+              <div className="mt-auto flex flex-col gap-3 pt-10 sm:flex-row">
+                <Link
+                  href={`/contacto?servicio=${encodeURIComponent(service.title)}`}
+                  className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 bg-[var(--color-ink)] px-6 font-sans text-sm font-semibold text-white transition-colors hover:bg-[var(--color-brass)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)] focus-visible:ring-offset-2"
+                >
+                  Solicitar cotización
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 border border-[var(--color-ink)]/20 px-6 font-sans text-sm font-semibold text-[var(--color-ink)] transition-colors hover:border-[var(--color-brass)] hover:text-[var(--color-brass)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]"
+                >
+                  <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                  WhatsApp
+                </a>
               </div>
             </div>
           </motion.div>

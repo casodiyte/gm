@@ -5,7 +5,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, ArrowRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { BLOG_POSTS } from "@/lib/blog-data";
+import { BLOG_POSTS, getReadingTime } from "@/lib/blog-data";
+import { ImageReveal, Reveal } from "@/components/ui/Reveal";
 
 export default function BlogPage() {
   return (
@@ -22,10 +23,13 @@ export default function BlogPage() {
             title="Conocimiento y mejores prácticas" 
             align="left"
             className="mb-8 relative z-10"
+            as="h1"
           />
-          <p className="font-sans text-lg md:text-xl text-[var(--color-ink)]/70 leading-relaxed relative z-10 border-l-4 border-[var(--color-brass)] pl-6 max-w-3xl">
-            Artículos especializados, casos de estudio y guías técnicas escritas por nuestros ingenieros para optimizar el rendimiento y la vida útil de tus equipos.
-          </p>
+          <Reveal delay={0.12}>
+            <p className="font-sans text-lg md:text-xl text-[var(--color-ink)]/70 leading-relaxed relative z-10 border-l-4 border-[var(--color-brass)] pl-6 max-w-3xl">
+              Guías introductorias para reconocer buenas prácticas de operación, mantenimiento y selección de equipos de bombeo.
+            </p>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 max-w-6xl mx-auto">
@@ -40,32 +44,34 @@ export default function BlogPage() {
               {/* Golden line on top */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-brass)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
 
-              <Link href={`/blog/${post.slug}`} className="block relative w-full aspect-[16/10] overflow-hidden bg-[var(--color-ink)]">
-                <Image
-                  src={post.fallbackImage}
-                  alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+              <ImageReveal className="aspect-[16/10] w-full bg-[var(--color-ink)]" delay={idx * 0.06}>
+                <Link href={`/blog/${post.slug}`} className="block relative h-full w-full overflow-hidden">
+                  <Image
+                    src={post.fallbackImage}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
                 
                 {/* Etiqueta Flotante */}
-                <div className="absolute top-6 left-6 bg-[var(--color-ink)]/80 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-sm">
-                  <span className="font-mono text-[10px] tracking-widest text-[var(--color-brass)] uppercase">
-                    Ingeniería
-                  </span>
-                </div>
-              </Link>
+                  <div className="absolute top-6 left-6 bg-[var(--color-ink)]/80 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-sm">
+                    <span className="font-mono text-[10px] tracking-widest text-[var(--color-brass)] uppercase">
+                      Ingeniería
+                    </span>
+                  </div>
+                </Link>
+              </ImageReveal>
               
               <div className="flex flex-col flex-grow p-10">
                 <div className="flex items-center text-[var(--color-steel)] font-mono text-[11px] uppercase tracking-widest mb-6">
                   <Calendar className="w-3.5 h-3.5 mr-2 text-[var(--color-brass)]" />
                   <time dateTime={post.date}>
-                    {new Date(post.date).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    {new Date(post.date).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
                   </time>
                   <span className="mx-3 text-[var(--color-steel)]/30">|</span>
-                  <span>5 MIN LECTURA</span>
+                  <span>{getReadingTime(post)} MIN LECTURA</span>
                 </div>
                 
                 <h2 className="font-display font-bold text-3xl text-[var(--color-ink)] mb-4 group-hover:text-[var(--color-brass)] transition-colors leading-tight line-clamp-3">

@@ -1,54 +1,58 @@
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { keySpec, type ProductDetails } from "@/lib/catalog-data";
 
 interface ProductCardProps {
-  code: string;
-  name: string;
-  imageSrc: string;
-  fallbackText?: string;
+  product: ProductDetails;
   onClick?: () => void;
 }
 
-export function ProductCard({ code, name, imageSrc, fallbackText, onClick }: ProductCardProps) {
+export function ProductCard({ product, onClick }: ProductCardProps) {
+  const spec = keySpec(product);
+
   return (
-    <button onClick={onClick} className="w-full text-left group relative bg-[var(--color-paper)] p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full flex flex-col corner-brackets">
-      {/* Code Header */}
-      <div className="flex items-center justify-between mb-4">
-        <span className="font-mono text-xs text-[var(--color-steel)] px-2 py-1 bg-[var(--color-ink)]/5 rounded">
-          {code}
-        </span>
-      </div>
-
-      {/* Image Container with 1:1 Aspect Ratio */}
-      <div className="relative w-full aspect-square mb-6 bg-white flex items-center justify-center p-4">
-        <Image
-          src={imageSrc}
-          alt={`Producto: ${name}`}
-          fill
-          className="object-contain transition-transform duration-500 group-hover:scale-105 group-hover:brightness-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+    <button
+      type="button"
+      aria-label={`Ver ficha técnica de ${product.name}`}
+      onClick={onClick}
+      className="group relative flex h-full w-full flex-col overflow-hidden border border-[var(--color-steel)]/15 bg-white text-left transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[var(--color-brass)]/60 hover:shadow-[0_24px_60px_rgba(0,46,95,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]"
+    >
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,var(--color-mist)_100%)]">
+        <div
+          className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(0,46,95,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,46,95,.05)_1px,transparent_1px)] [background-size:24px_24px]"
+          aria-hidden="true"
         />
-        {/* Fallback styling for when image fails or isn't perfect */}
-        <div className="absolute inset-0 flex items-center justify-center text-center opacity-0 hover:opacity-0 -z-10 bg-[var(--color-ink)]/5">
-           <span className="font-display text-xl text-[var(--color-steel)]">{fallbackText || name}</span>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex-grow flex flex-col justify-end">
-        <h3 className="font-heading font-semibold text-lg text-[var(--color-ink)] mb-3 line-clamp-2">
-          {name}
-        </h3>
-        <span 
-          className="inline-flex items-center text-sm font-sans font-medium text-[var(--color-steel)] group-hover:text-[var(--color-brass)] transition-colors"
-        >
-          Ver ficha técnica
-          <ArrowRight className="w-4 h-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+        <Image
+          src={product.img}
+          alt=""
+          fill
+          className="object-contain p-6 mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.06]"
+          sizes="(max-width: 640px) 90vw, (max-width: 1280px) 45vw, 25vw"
+        />
+        <span className="absolute left-4 top-4 bg-white/90 px-2 py-1 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--color-steel)] backdrop-blur-sm">
+          {product.code}
         </span>
       </div>
-      
-      {/* Structural hairline bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-[var(--color-steel)]/20" />
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-heading text-xl font-semibold leading-tight text-[var(--color-ink)]">
+          {product.name}
+        </h3>
+        {spec && (
+          <p className="mt-3 border-l-2 border-[var(--color-brass)] pl-3 font-sans text-sm leading-snug text-[var(--color-ink)]/75">
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--color-steel)]">{spec.label}</span>
+            <span className="line-clamp-2">{spec.value}</span>
+          </p>
+        )}
+        <span className="mt-auto flex items-center justify-between pt-5 font-sans text-sm font-semibold text-[var(--color-ink)]">
+          Ver ficha técnica
+          <span className="grid h-8 w-8 place-items-center rounded-full border border-[var(--color-ink)]/15 transition-colors group-hover:border-[var(--color-brass)] group-hover:bg-[var(--color-brass)] group-hover:text-white">
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </span>
+        </span>
+      </div>
+
+      <span className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-[var(--color-brass)] transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
     </button>
   );
 }
