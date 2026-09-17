@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { WordReveal } from "@/components/ui/WordReveal";
+import { CountryFlag, flagGradient } from "@/components/ui/CountryFlag";
 import { BRANDS } from "@/lib/site-data";
 
 export default function MarcasPage() {
@@ -55,8 +56,10 @@ export default function MarcasPage() {
                     Distribuidor autorizado en México
                   </div>
                   <WordReveal as="h2" text={featuredBrand.name} className="text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] sm:text-5xl" />
-                  <p className="mt-3 font-mono text-xs font-medium uppercase tracking-[0.16em] text-white/60">
-                    {featuredBrand.area} · {featuredBrand.country}
+                  <p className="mt-3 flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.16em] text-white/60">
+                    {featuredBrand.area} ·
+                    <CountryFlag country={featuredBrand.country} className="h-5" />
+                    {featuredBrand.country}
                   </p>
                   <p className="mt-6 max-w-3xl font-sans text-lg leading-relaxed text-white/80">
                     {featuredBrand.capabilities}
@@ -94,8 +97,18 @@ export default function MarcasPage() {
                   direction="scale"
                   delay={(index % 3) * 0.065}
                   key={brand.slug}
-                  className="corner-brackets group flex min-h-[320px] flex-col border border-[var(--color-steel)]/15 bg-white p-7 shadow-[0_12px_40px_rgba(0,46,95,0.055)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[var(--color-brass)]/45 hover:shadow-[0_22px_55px_rgba(0,46,95,0.1)] sm:p-8"
+                  className="group relative flex min-h-[320px] flex-col overflow-hidden border border-[var(--color-steel)]/15 bg-white p-7 shadow-[0_12px_40px_rgba(0,46,95,0.055)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(0,46,95,0.12)] sm:p-8"
                 >
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-1.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                    style={{ backgroundImage: flagGradient(brand.country) }}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-25"
+                    style={{ backgroundImage: flagGradient(brand.country, "135deg") }}
+                  />
                   <div className="relative h-20 w-full">
                     <Image
                       src={brand.logo}
@@ -108,7 +121,10 @@ export default function MarcasPage() {
                   <div className="mt-7 h-px w-full bg-[var(--color-steel)]/15" />
                   <div className="mt-5 flex items-center justify-between gap-4 font-mono text-[11px] font-semibold uppercase tracking-[0.13em]">
                     <span className="text-[var(--color-ink)]">{brand.area}</span>
-                    <span className="shrink-0 text-[var(--color-steel)]">{brand.country}</span>
+                    <span className="flex shrink-0 items-center gap-2 text-[var(--color-steel)]">
+                      <CountryFlag country={brand.country} interactive className="h-5" />
+                      {brand.country}
+                    </span>
                   </div>
                   <h3 className="mt-5 font-heading text-xl font-semibold text-[var(--color-ink)]">
                     {brand.name}
