@@ -232,7 +232,7 @@ export function ChatBot() {
       {teaser && !open && (
         <div className="fixed bottom-24 right-6 z-[90] flex max-w-[16rem] items-start gap-2 rounded-2xl rounded-br-sm bg-white p-4 text-sm text-[var(--color-ink)] shadow-[0_18px_50px_rgba(0,46,95,0.22)]">
           <button type="button" onClick={openChat} className="text-left font-medium leading-snug">
-            ¿Buscas un equipo o una cotización? Te ayudo en segundos.
+            Pronto serás atendido.
           </button>
           <button
             type="button"

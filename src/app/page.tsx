@@ -3,12 +3,9 @@ import Link from "next/link";
 import {
   ArrowRight,
   CheckCircle2,
-  Factory,
-  FileSearch,
-  Handshake,
-  Settings,
 } from "lucide-react";
 import { Hero } from "@/components/home/Hero";
+import { QuickRequestForm } from "@/components/home/QuickRequestForm";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { WordReveal } from "@/components/ui/WordReveal";
@@ -16,62 +13,47 @@ import { ImageReveal, Reveal } from "@/components/ui/Reveal";
 import { Isotipo } from "@/components/ui/Isotipo";
 import { BRANDS, CONTACT, SITE } from "@/lib/site-data";
 import { SERVICES } from "@/lib/services-data";
-import { CATALOG_ITEM_COUNT, GM_FAMILY_COUNT } from "@/lib/catalog-data";
 
 const products = [
   {
     name: "Bombas verticales",
     detail: "Turbina vertical, flujo mixto y flujo axial",
-    figure: "42,000",
-    unit: "gpm de caudal máximo",
     image: "/images/catalogo/gm-turbina-vertical.webp",
     categoryId: "verticales",
   },
   {
     name: "Centrífugas horizontales",
     detail: "Proceso ANSI, inatascable y Vortex",
-    figure: "4,000",
-    unit: "gpm",
     image: "/images/catalogo/gm-ansi.webp",
     categoryId: "horizontales",
   },
   {
     name: "Caja partida y sellado",
-    detail: "Hasta 1,500 ft de carga total",
-    figure: "18,000",
-    unit: "gpm",
+    detail: "Configuraciones de caja partida y soluciones de sellado",
     image: "/images/catalogo/gm-caja-partida.webp",
     categoryId: "centrifugas",
   },
   {
     name: "Servicio severo",
     detail: "Heavy Flow, papel y acoplamiento directo",
-    figure: "30,000",
-    unit: "gpm",
     image: "/images/catalogo/gm-heavy-flow.webp",
     categoryId: "especiales",
   },
   {
     name: "Desplazamiento positivo",
     detail: "Charnela, aspas deslizantes y vacío",
-    figure: "90",
-    unit: "m³/h",
     image: "/images/catalogo/gm-aspas-deslizantes.webp",
     categoryId: "desplazamiento-positivo",
   },
   {
     name: "Cavidades progresivas",
     detail: "Líneas NOV Mono y Moyno",
-    figure: "6",
-    unit: "líneas",
     image: "/images/catalogo/nov-serie-2000.webp",
     categoryId: "cavidades-progresivas",
   },
   {
     name: "Agitación y mezcla",
     detail: "Chemineer, Prochem, Greerco y Kenics",
-    figure: "4",
-    unit: "marcas",
     image: "/images/catalogo/nov-prochem-agitador-entrada-lateral.webp",
     categoryId: "mezcla",
   },
@@ -103,39 +85,6 @@ const sectors = [
   "Manufactura",
 ] as const;
 
-const processSteps = [
-  {
-    number: "01",
-    title: "Entender la operación",
-    description: "Revisamos fluido, caudal, carga, temperatura, sólidos y condiciones de instalación.",
-    icon: FileSearch,
-  },
-  {
-    number: "02",
-    title: "Definir la solución",
-    description: "Relacionamos hidráulica, materiales, equipo, sellado, control y alcance de servicio.",
-    icon: Settings,
-  },
-  {
-    number: "03",
-    title: "Fabricar o integrar",
-    description: "Ejecutamos fabricación GM, rehabilitación o integración de tecnología especializada.",
-    icon: Factory,
-  },
-  {
-    number: "04",
-    title: "Acompañar la decisión",
-    description: "Entregamos información técnica para selección, puesta en servicio y mantenimiento.",
-    icon: Handshake,
-  },
-] as const;
-
-const stats = [
-  { value: `+${SITE.yearsOfExperience}`, label: "Años de experiencia" },
-  { value: String(GM_FAMILY_COUNT), label: "Familias de bombas GM" },
-  { value: String(BRANDS.length), label: "Marcas representadas" },
-] as const;
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--color-paper)]">
@@ -154,9 +103,10 @@ export default function Home() {
                 Catálogo
               </p>
               <WordReveal id="productos-title" as="h2" text="Nuestros productos" className="font-display text-5xl font-bold uppercase leading-[0.9] tracking-[-0.02em] text-[var(--color-ink)] sm:text-7xl" />
-              <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--color-ink)]/70">
-                {GM_FAMILY_COUNT} familias de bombas fabricadas por GM y {CATALOG_ITEM_COUNT - GM_FAMILY_COUNT} equipos más de las líneas que integramos.
-              </p>
+              <div className="mt-6 max-w-4xl space-y-4 text-lg leading-relaxed text-[var(--color-ink)]/70">
+                <p>Ponemos a su alcance un portafolio especializado de equipos de bombeo, sistemas periféricos, componentes auxiliares y soluciones integrales para aplicaciones de bombeo. Complementamos nuestra oferta mediante representaciones y alianzas estratégicas con fabricantes especializados, integrando tecnología y experiencia para ofrecer soluciones a la medida de cada proyecto.</p>
+                <p>Desde la selección del equipo hasta la integración del sistema, brindamos el respaldo técnico necesario para desarrollar soluciones confiables, eficientes y orientadas a las necesidades de nuestros clientes.</p>
+              </div>
             </div>
             <Button asChild size="lg" className="w-fit"><Link href="/catalogo">Explorar el catálogo <ArrowRight /></Link></Button>
           </div>
@@ -193,10 +143,7 @@ export default function Home() {
                         </h3>
                         <p className="mt-2 text-sm text-[var(--color-ink)]/65">{product.detail}</p>
                       </div>
-                      <p className="shrink-0 text-right">
-                        <span className={`block font-display font-bold leading-none text-[var(--color-brass)] ${featured ? "text-5xl sm:text-6xl" : "text-3xl"}`}>{product.figure}</span>
-                        <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--color-steel)]">{product.unit}</span>
-                      </p>
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--color-steel)]/20 text-[var(--color-ink)] transition-colors group-hover:border-[var(--color-brass)] group-hover:bg-[var(--color-brass)] group-hover:text-white" aria-hidden="true"><ArrowRight className="h-5 w-5" /></span>
                     </div>
                     <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-[var(--color-brass)] transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
                   </Link>
@@ -217,12 +164,13 @@ export default function Home() {
                 className="mb-7"
               />
               <Reveal delay={0.08}>
-                <p className="max-w-2xl border-l-4 border-[var(--color-brass)] pl-6 text-lg leading-relaxed text-[var(--color-ink)]/75">
-                  El laboratorio GM permite caracterizar el comportamiento hidráulico de equipos horizontales y verticales mediante variables de caudal, carga y desempeño. La información obtenida ayuda a validar, rehabilitar o seleccionar un sistema de bombeo.
-                </p>
+                <div className="max-w-2xl space-y-4 border-l-4 border-[var(--color-brass)] pl-6 text-lg leading-relaxed text-[var(--color-ink)]/75">
+                  <p>En el Laboratorio GM contamos con la capacidad tecnológica para realizar pruebas y evaluar el desempeño de equipos de bombeo bajo condiciones controladas. Mediante el monitoreo y análisis de variables hidráulicas y eléctricas, obtenemos información precisa sobre el comportamiento y rendimiento de cada equipo.</p>
+                  <p>Los resultados permiten validar las condiciones de operación, verificar el cumplimiento de los parámetros de diseño y atender los requerimientos específicos de cada cliente, brindando mayor confiabilidad y respaldo técnico en la evaluación de nuestros equipos de bombeo.</p>
+                </div>
               </Reveal>
               <Reveal className="mt-8 flex flex-wrap gap-3" delay={0.16}>
-                <Button asChild><Link href="/catalogo?categoria=laboratorio">Ver capacidad de pruebas <ArrowRight /></Link></Button>
+                <Button asChild><Link href="/catalogo?categoria=laboratorio">Conocer el laboratorio <ArrowRight /></Link></Button>
                 <Button variant="outline" asChild><a href="/downloads/catalogo-general-gm.pdf" target="_blank" rel="noopener noreferrer">Consultar catálogo</a></Button>
               </Reveal>
             </div>
@@ -284,14 +232,6 @@ export default function Home() {
                 Somos especialistas en brindar soluciones en sistemas de bombeo para impulsar la productividad de nuestros clientes. Respaldados por nuestra experiencia y una sólida red de aliados estratégicos en diferentes especialidades, transformamos el conocimiento técnico en soluciones eficientes de alto valor.
               </p>
             </Reveal>
-            <dl className="relative mt-10 grid max-w-xl grid-cols-2 border-y border-white/15">
-              {stats.slice(1).map((stat, index) => (
-                <div key={stat.label} className={`py-6 ${index === 0 ? "border-r border-white/15 pr-6" : "pl-6"}`}>
-                  <dd className="font-display text-5xl font-bold leading-none">{stat.value}</dd>
-                  <dt className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/60">{stat.label}</dt>
-                </div>
-              ))}
-            </dl>
             <Reveal delay={0.16}>
               <Link href="/nosotros" className="group relative mt-10 inline-flex items-center gap-3 font-heading text-xl font-semibold uppercase tracking-wide text-white">
                 Conoce nuestra historia
@@ -330,55 +270,26 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-b border-[var(--color-steel)]/10 bg-[var(--color-paper)] py-24">
+      <section className="relative overflow-hidden bg-[var(--color-ink)] py-24 text-white">
+        <div className="pointer-events-none absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:52px_52px]" aria-hidden="true" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
-            <div className="lg:sticky lg:top-32">
-              <SectionHeader
-                eyebrow="Método de trabajo"
-                title="Del problema de planta a una solución ejecutable"
-                description="No se trata sólo de vender un equipo: cada proyecto comienza con las variables reales de la operación."
-              />
-              <Button variant="outline" asChild>
-                <Link href="/contacto">Preparar requerimiento <ArrowRight /></Link>
-              </Button>
+          <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="max-w-4xl">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-sky)]">Marcas representadas</p>
+              <WordReveal as="h2" text="Aliados estratégicos para resolver el proceso completo" className="mt-4 text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] text-white sm:text-5xl lg:text-6xl" />
+              <Reveal delay={0.1}><p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/70">Integramos fabricantes especializados para cubrir bombeo, sellado, dosificación, vapor, motores, automatización y manejo de fluidos con respaldo técnico de principio a fin.</p></Reveal>
             </div>
-            <ol className="grid gap-5 sm:grid-cols-2">
-              {processSteps.map((step) => {
-                const Icon = step.icon;
-                return (
-                  <Reveal as="li" direction={Number(step.number) % 2 === 0 ? "right" : "left"} delay={(Number(step.number) - 1) * 0.06} key={step.number} className="relative min-h-64 overflow-hidden border border-[var(--color-steel)]/15 bg-white p-7 shadow-[0_16px_45px_rgba(0,46,95,0.055)]">
-                    <span className="absolute right-5 top-3 font-display text-7xl font-bold text-[var(--color-ink)]/[0.05]" aria-hidden="true">{step.number}</span>
-                    <div className="flex h-12 w-12 items-center justify-center bg-[var(--color-brass)]/10 text-[var(--color-brass)]">
-                      <Icon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <h3 className="mt-7 font-heading text-2xl font-semibold text-[var(--color-ink)]">{step.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink)]/70">{step.description}</p>
-                  </Reveal>
-                );
-              })}
-            </ol>
+            <Reveal delay={0.16}><Button asChild className="bg-[var(--color-brass)] text-[var(--color-ink)] hover:bg-white"><Link href="/marcas">Conocer todas las marcas <ArrowRight /></Link></Button></Reveal>
           </div>
-        </div>
-      </section>
-
-      <section className="bg-[var(--color-mist)] py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-            <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Marcas representadas</p>
-              <WordReveal as="h2" text="Aliados estratégicos para resolver el proceso completo" className="mt-4 text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl" />
-              <Reveal delay={0.1}><p className="mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-ink)]/70">Además de las bombas GM, integramos tecnologías de fabricantes especializados en cavidades progresivas, mezcla, dosificación, sellado, vapor, automatización y manejo de fluidos.</p></Reveal>
-              <Reveal delay={0.16}><Button variant="outline" asChild className="mt-7"><Link href="/marcas">Conocer todas las marcas <ArrowRight /></Link></Button></Reveal>
-            </div>
-            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-              {featuredBrands.map((brand, index) => (
-                <Reveal as="li" direction="scale" delay={index * 0.05} key={brand.slug} className="flex min-h-28 items-center justify-center border border-[var(--color-steel)]/15 bg-white p-4 shadow-sm">
-                  <div className="relative h-14 w-full"><Image src={brand.logo} alt={brand.name} fill sizes="(min-width: 1280px) 12vw, 25vw" className="object-contain" /></div>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
+          <ul className="relative mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {featuredBrands.map((brand, index) => (
+              <Reveal as="li" direction="scale" delay={index * 0.05} key={brand.slug} className="group flex min-h-64 flex-col border border-white/15 bg-white p-6 text-[var(--color-ink)] shadow-[0_24px_70px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">
+                <div className="relative h-24 w-full border-b border-[var(--color-steel)]/15 pb-5"><Image src={brand.logo} alt={brand.name} fill sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 90vw" className="object-contain object-left" /></div>
+                <p className="mt-5 text-base font-semibold uppercase tracking-[0.08em] text-[var(--color-brass)]">{brand.area}</p>
+                <p className="mt-3 text-base leading-relaxed text-[var(--color-ink)]/70">{brand.capabilities}</p>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -417,20 +328,22 @@ export default function Home() {
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div>
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-sky)]">Atención de ingeniería</p>
-            <WordReveal as="h2" text="Cuéntanos qué fluido mueves y qué necesita tu proceso." className="mt-4 text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] sm:text-5xl" />
-            <Reveal delay={0.1}><p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">Comparte caudal, carga, temperatura y condiciones de operación. Nuestro equipo podrá orientarte hacia una solución o una revisión técnica.</p></Reveal>
-            <Reveal className="mt-8 flex flex-col gap-3 sm:flex-row" delay={0.16}>
-              <Button asChild className="bg-[var(--color-brass)] hover:bg-white hover:text-[var(--color-ink)]"><a href={`https://wa.me/${CONTACT.whatsappInternational}`} target="_blank" rel="noopener noreferrer">Contactar por WhatsApp <ArrowRight /></a></Button>
-              <Button variant="outline" asChild className="border-white/40 text-white hover:border-white hover:bg-white hover:text-[var(--color-ink)]"><Link href="/contacto">Preparar solicitud</Link></Button>
-            </Reveal>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-sky)]">Atención de ingeniería</p>
+              <WordReveal as="h2" text="Cuéntanos tu necesidad de equipo de bombeo." className="mt-4 text-balance font-display text-4xl font-bold uppercase leading-tight tracking-[-0.015em] sm:text-5xl" />
+              <Reveal delay={0.1}>
+                <p className="mt-5 max-w-2xl text-xl font-semibold leading-relaxed text-white">Compártenos tus condiciones de operación.</p>
+                <p className="mt-3 max-w-2xl text-lg leading-relaxed text-white/75">Nuestro equipo técnico está listo para orientarte y ayudarte a encontrar la solución adecuada para tu proyecto.</p>
+              </Reveal>
+              <Reveal className="mt-8" delay={0.16}>
+                <Button asChild className="bg-[var(--color-brass)] hover:bg-white hover:text-[var(--color-ink)]"><a href={`https://wa.me/${CONTACT.whatsappInternational}`} target="_blank" rel="noopener noreferrer">Contactar por WhatsApp <ArrowRight /></a></Button>
+              </Reveal>
             </div>
             <Reveal as="aside" direction="right" className="border border-white/15 bg-white/[0.055] p-7 backdrop-blur-sm sm:p-9">
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-sky)]">Para comenzar</p>
-              <h3 className="mt-3 font-heading text-2xl font-semibold">Ten a la mano estos datos</h3>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-sky)]">Condiciones de operación</p>
+              <h3 className="mt-3 font-heading text-2xl font-semibold">Datos útiles para orientar la solución</h3>
               <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                {["Fluido y sólidos", "Caudal requerido", "Carga o presión", "Temperatura", "Materiales disponibles", "Ubicación del proyecto"].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-sm text-white/80">
+                {["Líquido a bombear", "Caudal o gasto requerido", "Carga o presión", "Temperatura", "Velocidad", "Ubicación del proyecto"].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-base text-white/80">
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--color-sky)]" aria-hidden="true" />
                     {item}
                   </li>
@@ -439,6 +352,9 @@ export default function Home() {
               <p className="mt-7 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/60">Si aún no cuentas con todos los datos, comparte lo disponible y te ayudaremos a ordenar el requerimiento.</p>
             </Reveal>
           </div>
+          <Reveal className="mt-12" delay={0.18}>
+            <QuickRequestForm />
+          </Reveal>
         </div>
       </section>
     </div>

@@ -84,7 +84,7 @@ export default function ContactoPage() {
           <SectionHeader
             eyebrow="Contacto técnico"
             title="Hablemos de tu proceso"
-            description="Comparte las condiciones de operación y abriremos una conversación en WhatsApp con la información lista para revisar."
+            description="Comparte las condiciones de operación. El equipo técnico-comercial de GM recibirá la solicitud por WhatsApp, revisará el requerimiento y dará seguimiento."
             as="h1"
           />
         </header>
@@ -140,7 +140,7 @@ export default function ContactoPage() {
 
             <div className="mt-6">
               <label htmlFor="message" className="text-sm font-medium text-white">Requerimiento *</label>
-              <textarea {...register("message")} id="message" rows={5} placeholder="Fluido, caudal, carga o presión, temperatura y condiciones de operación." aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : "message-help"} className={cn(fieldClass, "resize-y", errors.message && "border-[#ff8a78]")} />
+              <textarea {...register("message")} id="message" rows={5} placeholder="Líquido a bombear, caudal o gasto requerido, carga o presión, temperatura, velocidad y ubicación del proyecto." aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : "message-help"} className={cn(fieldClass, "resize-y", errors.message && "border-[#ff8a78]")} />
               <p id="message-help" className="mt-2 text-xs leading-relaxed text-white/50">No incluyas datos sensibles ni información confidencial innecesaria.</p>
               <FieldError id="message-error" message={errors.message?.message} />
             </div>
@@ -181,7 +181,7 @@ export default function ContactoPage() {
             <section className="rounded-sm border border-[var(--color-steel)]/15 bg-white p-7 shadow-lg sm:p-8">
               <h2 className="font-display text-2xl font-bold uppercase text-[var(--color-ink)]">Datos útiles para cotizar</h2>
               <ul className="mt-5 space-y-3 text-[var(--color-ink)]/70">
-                {["Fluido y concentración de sólidos", "Caudal requerido", "Carga o presión de descarga", "Temperatura de operación", "Materiales y conexión disponibles", "Industria y ubicación del proyecto"].map((item) => <li key={item} className="flex gap-3"><span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-brass)]" />{item}</li>)}
+                {["Líquido a bombear", "Caudal o gasto requerido", "Carga o presión", "Temperatura", "Velocidad", "Ubicación del proyecto"].map((item) => <li key={item} className="flex gap-3"><span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-brass)]" />{item}</li>)}
               </ul>
             </section>
 
