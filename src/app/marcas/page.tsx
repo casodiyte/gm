@@ -115,7 +115,7 @@ export default function MarcasPage() {
                       alt={`Logo de ${brand.name}`}
                       fill
                       sizes="(min-width: 1280px) 24vw, (min-width: 640px) 45vw, 90vw"
-                      className="object-contain object-left"
+                      className={brand.slug === "latty" ? "origin-left scale-125 object-contain object-left" : "object-contain object-left"}
                     />
                   </div>
                   <div className="mt-7 h-px w-full bg-[var(--color-steel)]/15" />
