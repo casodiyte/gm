@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { CONTACT } from "@/lib/site-data";
 
 const inputClass =
-  "mt-2 min-h-12 w-full border border-white/20 bg-white/[0.06] px-4 py-3 text-base text-white outline-none transition placeholder:text-white/35 focus:border-[var(--color-sky)] focus:ring-2 focus:ring-[var(--color-sky)]/25";
+  "mt-2 min-h-11 w-full border border-white/20 bg-white/[0.06] px-3 py-2.5 text-base text-white outline-none transition placeholder:text-white/35 focus:border-[var(--color-sky)] focus:ring-2 focus:ring-[var(--color-sky)]/25";
 
 export function QuickRequestForm() {
   const [openedWhatsApp, setOpenedWhatsApp] = useState(false);
@@ -39,11 +39,11 @@ export function QuickRequestForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="border border-white/15 bg-[var(--color-ink-2)]/90 p-6 shadow-2xl sm:p-8 lg:p-10">
-      <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+    <form onSubmit={handleSubmit} className="border border-white/15 bg-[var(--color-ink-2)]/90 p-5 shadow-2xl sm:p-6 lg:p-8">
+      <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
         <div>
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-sky)]">Solicitud técnica</p>
-          <h3 className="mt-3 font-display text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">Prepara los datos de tu proyecto</h3>
+          <h3 className="mt-3 font-display text-2xl font-bold uppercase leading-tight text-white sm:text-3xl">Prepara los datos de tu proyecto</h3>
           <p className="mt-4 text-base leading-relaxed text-white/70">
             El equipo técnico-comercial de GM recibirá la solicitud por WhatsApp, revisará las condiciones de operación y dará seguimiento al requerimiento.
           </p>

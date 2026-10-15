@@ -44,6 +44,11 @@ body {
   font-family: var(--font-sans), sans-serif;
 }
 
+/* Keep content at a comfortable scale on wide desktop screens. */
+.container {
+  max-width: 80rem;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

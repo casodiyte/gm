@@ -90,15 +90,15 @@ export function Navbar() {
             : "left-0 right-0 top-0 rounded-none border-x-0 border-t-0 border-[var(--color-steel)]/20 bg-white/95 shadow-sm backdrop-blur-md",
         )}
       >
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
-          <div className={cn("flex items-center justify-between transition-[height] duration-300", isFloating ? "h-16 lg:h-20" : "h-20 lg:h-24")}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={cn("flex items-center justify-between transition-[height] duration-300", isFloating ? "h-16 lg:h-[4.5rem]" : "h-[4.5rem] lg:h-20")}>
             {/* Logo */}
-            <Link href="/" className="group relative flex h-14 w-40 flex-shrink-0 lg:h-16 lg:w-52" aria-label="Ir al inicio">
+            <Link href="/" className="group relative flex h-12 w-32 flex-shrink-0 lg:h-14 lg:w-40" aria-label="Ir al inicio">
               <Image
                 src={isFloating ? "/images/logo-horizontal-dark.png" : "/images/logo-horizontal.png"}
                 alt="GM Corporativo Industrial"
                 fill
-                sizes="(min-width: 1024px) 208px, 160px"
+                sizes="(min-width: 1024px) 160px, 128px"
                 className="object-contain object-left transition-opacity duration-300 group-hover:opacity-90"
                 loading="eager"
               />
