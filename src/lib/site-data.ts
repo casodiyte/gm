@@ -158,53 +158,161 @@ export const BRANDS: Brand[] = [
   },
 ];
 
-export const TECHNICAL_DOCUMENTS = [
+export type TechnicalDocument = {
+  title: string;
+  description: string;
+  href: string;
+  meta: string;
+  /** Agrupa la biblioteca técnica por origen del documento. */
+  group: "GM" | "NOV Mono · Moyno" | "Latty · Sellado industrial" | "Dosificación y control";
+};
+
+export const TECHNICAL_DOCUMENTS: TechnicalDocument[] = [
   {
     title: "Catálogo general GM",
     description: "Familias de bombas GM, capacidades y laboratorio de pruebas hidráulicas.",
     href: "/downloads/catalogo-general-gm.pdf",
     meta: "PDF · 2.01 MB · 9 páginas",
+    group: "GM",
   },
   {
     title: "Bombas verticales GM",
     description: "Bombas de turbina vertical, flujo mixto y flujo axial.",
     href: "/downloads/bombas-verticales-gm.pdf",
     meta: "PDF · 3.00 MB · 8 páginas",
+    group: "GM",
   },
   {
     title: "Catálogo de productos NOV",
     description: "Soluciones NOV, MONO/Moyno y equipos para bombeo y mezcla.",
     href: "/downloads/catalogo-productos-nov.pdf",
     meta: "PDF · 1.91 MB · 9 páginas",
+    group: "NOV Mono · Moyno",
   },
   {
-    title: "Moyno Serie 2000",
-    description: "Ficha técnica de bombas de cavidad progresiva Serie 2000.",
-    href: "/downloads/moyno-serie-2000.pdf",
-    meta: "PDF · 0.24 MB · 1 página",
+    title: "Bomba Compact C",
+    description: "Cavidad progresiva compacta: hasta 440 m³/h, 24 bar y 100 °C.",
+    href: "/downloads/nov-mono-compact-c.pdf",
+    meta: "PDF · 0.80 MB · 2 páginas",
+    group: "NOV Mono · Moyno",
   },
   {
-    title: "Moyno EZstrip",
-    description: "Ficha técnica para mantenimiento simplificado de bombas EZstrip.",
+    title: "Bomba de transiego EZstrip",
+    description: "Mantenimiento in situ con biela partida: hasta 225 m³/h y 12 bar.",
+    href: "/downloads/nov-mono-ezstrip-transferencia.pdf",
+    meta: "PDF · 0.89 MB · 2 páginas",
+    group: "NOV Mono · Moyno",
+  },
+  {
+    title: "EZstrip con tecnología Scion",
+    description: "Nueva generación EZstrip, más ligera y corta. Documento en inglés.",
     href: "/downloads/moyno-ezstrip.pdf",
     meta: "PDF · 0.26 MB · 1 página",
+    group: "NOV Mono · Moyno",
   },
   {
-    title: "Bombas dosificadoras Exatta",
-    description: "Dosificación electromagnética y control de pH/ORP.",
-    href: "/downloads/bombas-dosificadoras-exatta.pdf",
-    meta: "PDF · 0.92 MB · 7 páginas",
-  },
-  {
-    title: "Sellado industrial Latty",
-    description: "Empaquetaduras, sellos mecánicos, juntas y herramientas.",
-    href: "/downloads/sellado-industrial-latty.pdf",
-    meta: "PDF · 8.86 MB · 11 páginas",
+    title: "Serie 2000 con tecnología Scion",
+    description: "Bomba de cavidad progresiva Serie 2000. Documento en inglés.",
+    href: "/downloads/moyno-serie-2000.pdf",
+    meta: "PDF · 0.24 MB · 1 página",
+    group: "NOV Mono · Moyno",
   },
   {
     title: "Carta de distribuidor NOV México 2026",
     description: "Documento de autorización para MONO/Moyno y Chemineer en México.",
     href: "/downloads/carta-distribuidor-nov-mexico-2026.pdf",
     meta: "PDF · 0.16 MB · 1 página",
+    group: "NOV Mono · Moyno",
   },
+  {
+    title: "Sellado industrial Latty",
+    description: "Empaquetaduras, sellos mecánicos, juntas y herramientas.",
+    href: "/downloads/sellado-industrial-latty.pdf",
+    meta: "PDF · 8.86 MB · 11 páginas",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "LATTYflon 2790",
+    description: "Empaquetadura alimentaria CE 1935/2004: 100 bar, 260 °C, pH 1-13.",
+    href: "/downloads/latty-lattyflon-2790.pdf",
+    meta: "PDF · 0.19 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "LATTYflon 3207",
+    description: "Empaquetadura de PTFE grafitado para fluidos químicamente agresivos.",
+    href: "/downloads/latty-lattyflon-3207.pdf",
+    meta: "PDF · 0.25 MB · 2 páginas",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "LATTYflon 4757",
+    description: "Empaquetadura de aramida y PTFE: hasta 1,800 bar y 300 °C.",
+    href: "/downloads/latty-lattyflon-4757.pdf",
+    meta: "PDF · 0.32 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "LATTYflon 4789",
+    description: "Empaquetadura de aramida para fluidos cargados y abrasivos.",
+    href: "/downloads/latty-lattyflon-4789.pdf",
+    meta: "PDF · 0.31 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "LATTYflon 5790",
+    description: "Empaquetadura alimentaria con alta resistencia al desgaste.",
+    href: "/downloads/latty-lattyflon-5790.pdf",
+    meta: "PDF · 0.23 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "LATTYgold 32",
+    description: "Lámina de fibras sintéticas NBR-SBR para junta estática.",
+    href: "/downloads/latty-lattygold-32.pdf",
+    meta: "PDF · 0.11 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "CARTseal B24",
+    description: "Cierre mecánico de cartucho con FDA, CE 1935/2004, ACS y ATEX.",
+    href: "/downloads/latty-cartseal-b24.pdf",
+    meta: "PDF · 1.71 MB · 6 páginas",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "Aparato de corte de empaquetaduras",
+    description: "Corta anillos a la medida para ejes de hasta 300 mm.",
+    href: "/downloads/latty-aparato-corte-empaquetaduras.pdf",
+    meta: "PDF · 0.16 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "Máquina manual de corte de juntas",
+    description: "Juntas circulares de 80 a 1,250 mm y hasta 8 mm de espesor.",
+    href: "/downloads/latty-maquina-manual-corte.pdf",
+    meta: "PDF · 0.14 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "Extractores de empaquetaduras",
+    description: "Extractores flexibles y rígidos para secciones de 4 a 25 mm.",
+    href: "/downloads/latty-extractores-empaquetaduras.pdf",
+    meta: "PDF · 0.16 MB · 1 página",
+    group: "Latty · Sellado industrial",
+  },
+  {
+    title: "Bombas dosificadoras Exatta",
+    description: "Dosificación electromagnética y control de pH/ORP.",
+    href: "/downloads/bombas-dosificadoras-exatta.pdf",
+    meta: "PDF · 0.92 MB · 7 páginas",
+    group: "Dosificación y control",
+  },
+];
+
+export const DOCUMENT_GROUPS = [
+  "GM",
+  "NOV Mono · Moyno",
+  "Latty · Sellado industrial",
+  "Dosificación y control",
 ] as const;

@@ -3,7 +3,16 @@
 import { BLOG_POSTS } from "@/lib/blog-data";
 import { CATALOG, keySpec, type ProductDetails } from "@/lib/catalog-data";
 import { SERVICES } from "@/lib/services-data";
-import { BRANDS, CONTACT, SITE, TECHNICAL_DOCUMENTS } from "@/lib/site-data";
+import { BRANDS, CONTACT, DOCUMENT_GROUPS, SITE, TECHNICAL_DOCUMENTS } from "@/lib/site-data";
+
+/** Convierte una etiqueta ("Latty · Sellado industrial") en un id de nodo estable. */
+const slugify = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 export type ChatAnswers = Record<string, string>;
 
@@ -361,8 +370,28 @@ BRANDS.forEach((brand) => {
 // ─── Documentos, contacto, empresa y blog ─────────────────────────────────────
 add({
   id: "documentos",
-  messages: ["Estos son los catálogos y fichas que puedes descargar:"],
-  options: TECHNICAL_DOCUMENTS.map((doc) => ({ label: `${doc.title} (${doc.meta.split(" · ")[1]})`, kind: "download", href: doc.href })),
+  messages: [`Tenemos ${TECHNICAL_DOCUMENTS.length} catálogos y fichas técnicas. ¿De qué línea?`],
+  options: DOCUMENT_GROUPS.filter((group) => TECHNICAL_DOCUMENTS.some((doc) => doc.group === group)).map((group) => ({
+    label: `${group} (${TECHNICAL_DOCUMENTS.filter((doc) => doc.group === group).length})`,
+    next: `documentos-${slugify(group)}`,
+  })),
+});
+
+DOCUMENT_GROUPS.forEach((group) => {
+  const documents = TECHNICAL_DOCUMENTS.filter((doc) => doc.group === group);
+  if (documents.length === 0) return;
+  add({
+    id: `documentos-${slugify(group)}`,
+    messages: [`${group}: elige el documento para abrirlo en PDF.`],
+    options: [
+      ...documents.map((doc) => ({
+        label: `${doc.title} (${doc.meta.split(" · ")[1]})`,
+        kind: "download" as const,
+        href: doc.href,
+      })),
+      { label: "Ver otras líneas", next: "documentos" },
+    ],
+  });
 });
 
 add({

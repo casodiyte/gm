@@ -7,7 +7,7 @@ import { Download, FileText } from "lucide-react";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ProductModal } from "@/components/ui/ProductModal";
 import { Isotipo } from "@/components/ui/Isotipo";
-import { TECHNICAL_DOCUMENTS } from "@/lib/site-data";
+import { DOCUMENT_GROUPS, TECHNICAL_DOCUMENTS } from "@/lib/site-data";
 import { CATALOG, CATALOG_ITEM_COUNT, findCategory, type ProductDetails } from "@/lib/catalog-data";
 import { cn } from "@/lib/utils";
 
@@ -159,26 +159,43 @@ function CatalogoView({ categoryParam }: { categoryParam: string | null }) {
         ))}
 
         <section className="mt-24 grid gap-10 border-t border-[var(--color-steel)]/15 pt-16 lg:grid-cols-[0.8fr_1.2fr]" aria-labelledby="technical-library-title">
-          <div>
+          <div className="lg:sticky lg:top-56 lg:self-start">
             <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Biblioteca técnica</p>
             <h2 id="technical-library-title" className="mt-3 font-display text-4xl font-bold uppercase tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl">Documentos para tu proyecto</h2>
-            <p className="mt-4 text-lg leading-relaxed text-[var(--color-ink)]/70">Catálogos y fichas del material proporcionado por GM. Confirma con ingeniería la versión y el alcance aplicables antes de especificar un equipo.</p>
+            <p className="mt-4 text-lg leading-relaxed text-[var(--color-ink)]/70">
+              {TECHNICAL_DOCUMENTS.length} catálogos y fichas técnicas del material proporcionado por GM. Confirma con ingeniería la versión y el alcance aplicables antes de especificar un equipo.
+            </p>
           </div>
-          <ul className="divide-y divide-[var(--color-steel)]/15 border-y border-[var(--color-steel)]/15">
-            {TECHNICAL_DOCUMENTS.map((document) => (
-              <li key={document.href}>
-                <a href={document.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-5 py-5 transition-colors hover:bg-[var(--color-mist)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center bg-[var(--color-ink)] text-[var(--color-sky)]"><FileText className="h-5 w-5" aria-hidden="true" /></span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-heading text-xl font-semibold text-[var(--color-ink)]">{document.title}</span>
-                    <span className="block text-sm text-[var(--color-ink)]/65">{document.description}</span>
-                  </span>
-                  <span className="hidden shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-steel)] sm:block">{document.meta}</span>
-                  <Download className="h-5 w-5 shrink-0 text-[var(--color-brass)] transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-10">
+            {DOCUMENT_GROUPS.map((group) => {
+              const documents = TECHNICAL_DOCUMENTS.filter((item) => item.group === group);
+              if (documents.length === 0) return null;
+              return (
+                <div key={group}>
+                  <h3 className="flex items-baseline gap-3 font-heading text-lg font-semibold uppercase tracking-wide text-[var(--color-ink)]">
+                    {group}
+                    <span className="h-px flex-1 bg-[var(--color-steel)]/20" aria-hidden="true" />
+                    <span className="text-sm font-medium normal-case tracking-normal text-[var(--color-steel)]">{documents.length}</span>
+                  </h3>
+                  <ul className="mt-3 divide-y divide-[var(--color-steel)]/15 border-y border-[var(--color-steel)]/15">
+                    {documents.map((document) => (
+                      <li key={document.href}>
+                        <a href={document.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-5 py-4 transition-colors hover:bg-[var(--color-mist)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]">
+                          <span className="grid h-11 w-11 shrink-0 place-items-center bg-[var(--color-ink)] text-[var(--color-sky)]"><FileText className="h-5 w-5" aria-hidden="true" /></span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block font-heading text-lg font-semibold text-[var(--color-ink)]">{document.title}</span>
+                            <span className="block text-sm text-[var(--color-ink)]/65">{document.description}</span>
+                          </span>
+                          <span className="hidden shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-steel)] sm:block">{document.meta}</span>
+                          <Download className="h-5 w-5 shrink-0 text-[var(--color-brass)] transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </section>
       </div>
 
