@@ -25,6 +25,14 @@
 :root {
   --background: var(--color-paper);
   --foreground: var(--color-ink);
+  /* Alto de la barra de navegación fija; las barras pegajosas se alinean con ella. */
+  --nav-height: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --nav-height: 5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

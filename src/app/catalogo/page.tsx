@@ -76,7 +76,7 @@ function CatalogoView({ categoryParam }: { categoryParam: string | null }) {
         </div>
       </header>
 
-      <div className="sticky top-20 z-30 border-b border-[var(--color-steel)]/15 bg-white/95 backdrop-blur-md lg:top-24">
+      <div className="sticky top-[var(--nav-height)] z-30 border-b border-[var(--color-steel)]/15 bg-white backdrop-blur-md">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div role="tablist" aria-label="Línea de productos" className="flex gap-1 overflow-x-auto pt-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {CATALOG.map((item) => {
@@ -159,7 +159,7 @@ function CatalogoView({ categoryParam }: { categoryParam: string | null }) {
         ))}
 
         <section className="mt-24 grid gap-10 border-t border-[var(--color-steel)]/15 pt-16 lg:grid-cols-[0.8fr_1.2fr]" aria-labelledby="technical-library-title">
-          <div className="lg:sticky lg:top-56 lg:self-start">
+          <div className="lg:sticky lg:top-[calc(var(--nav-height)+11rem)] lg:self-start">
             <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Biblioteca técnica</p>
             <h2 id="technical-library-title" className="mt-3 font-display text-4xl font-bold uppercase tracking-[-0.015em] text-[var(--color-ink)] sm:text-5xl">Documentos para tu proyecto</h2>
             <p className="mt-4 text-lg leading-relaxed text-[var(--color-ink)]/70">
